@@ -1,3 +1,4 @@
+const ErrorHandler = require("../../../utilities/errorHandler");
 const { User } = require("../../models/user");
 
 const resolvers = {
@@ -15,24 +16,18 @@ const resolvers = {
 
 				// If the user does not exist, throw an error
 				if (!user) {
-					throw new GraphQLError(`User does not exist`, {
-						extensions: {
-							code: "GET_USER_ERROR",
-						},
-					});
+					ErrorHandler.throwError(
+						"User does not exist",
+						"GET_USER_ERROR"
+					);
 				}
 
 				return user;
 			} catch (error) {
-				// Check if error is a GraphQLError
-				if (error instanceof GraphQLError) {
-					throw error;
-				}
-
-				// Otherwise, it's an unexpected internal error
-				throw new GraphQLError(
+				ErrorHandler.catchError(
+					error,
 					`Failed to fetch user: ${error.message}`,
-					{ extensions: { code: "FETCH_USER_ERROR" } }
+					"FETCH_USER_ERROR"
 				);
 			}
 		},
