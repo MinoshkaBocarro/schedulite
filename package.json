@@ -1,0 +1,50 @@
+{
+	"name": "frontend",
+	"private": true,
+	"version": "0.0.0",
+	"type": "module",
+	"scripts": {
+		"dev": "vite",
+		"build": "vite build",
+		"lint": "eslint .",
+		"preview": "vite preview",
+		"sass:compile": "sass src/scss/main.scss style.css",
+		"sass:verbose": "sass --verbose src/scss/main.scss style.css"
+	},
+	"dependencies": {
+		"@apollo/client": "^4.0.8",
+		"@fullcalendar/core": "^6.1.19",
+		"@fullcalendar/daygrid": "^6.1.19",
+		"@fullcalendar/interaction": "^6.1.19",
+		"@fullcalendar/react": "^6.1.19",
+		"@holmesdev/ponder-spinners": "^1.0.30",
+		"@hookform/resolvers": "^5.2.2",
+		"@mdi/js": "^7.4.47",
+		"@mdi/react": "^1.6.1",
+		"bootstrap": "^5.3.8",
+		"bootstrap-icons": "^1.13.1",
+		"date-fns": "^4.1.0",
+		"graphql": "^16.11.0",
+		"joi": "^18.0.1",
+		"react": "^19.1.1",
+		"react-bootstrap": "^2.10.10",
+		"react-dom": "^19.1.1",
+		"react-hook-form": "^7.65.0",
+		"react-icons": "^5.5.0",
+		"react-router-dom": "^7.9.5",
+		"react-toastify": "^11.0.5",
+		"styled-components": "^6.1.19"
+	},
+	"devDependencies": {
+		"@eslint/js": "^9.36.0",
+		"@types/react": "^19.1.16",
+		"@types/react-dom": "^19.1.9",
+		"@vitejs/plugin-react": "^5.0.4",
+		"eslint": "^9.36.0",
+		"eslint-plugin-react-hooks": "^5.2.0",
+		"eslint-plugin-react-refresh": "^0.4.22",
+		"globals": "^16.4.0",
+		"sass": "^1.94.0",
+		"vite": "^7.1.7"
+	}
+}
