@@ -46,6 +46,7 @@ const resolvers = {
 				return event;
 			} catch (error) {
 				ErrorHandler.catchError(
+					error,
 					`Failed to fetch event: ${error.message}`,
 					"FETCH_EVENT_ERROR"
 				);
@@ -67,6 +68,7 @@ const resolvers = {
 				return events;
 			} catch (error) {
 				ErrorHandler.catchError(
+					error,
 					`Failed to fetch events ${error.message}`,
 					"FETCH_EVENTS_ERROR"
 				);

@@ -231,6 +231,7 @@ const resolvers = {
 				return updatedUser;
 			} catch (error) {
 				ErrorHandler.catchError(
+					error,
 					`Failed to update user:${error.message}`,
 					"UPDATE_USER_ERROR"
 				);
@@ -269,6 +270,7 @@ const resolvers = {
 				return deletedUser;
 			} catch (error) {
 				ErrorHandler.catchError(
+					error,
 					`Failed to delete user: ${error.message}`,
 					"DELETE_USER_ERROR"
 				);
