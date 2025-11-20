@@ -1,3 +1,22 @@
+// GraphQL Resolvers for Event Type
+// It handles field resolvers and CRUD operations for Events
+
+// Requirements
+// Mongoose Models: User and Event
+
+// Resolver List
+// Type Event: createdBy, attendees
+// Type Query: getEvent, getUsersEvent
+// Type Mutation: createEvent, updateEvent, deleteEvent
+
+// Helper Function List
+// isAuthenticated
+// isAuthorised
+// usernameListValidation
+
+// Package Imports
+const _ = require("lodash");
+
 // Error Handler Imports
 const ErrorHandler = require("../../../utilities/errorHandler");
 
@@ -17,28 +36,50 @@ const {
 const { User } = require("../../models/user");
 
 const resolvers = {
+	// Field resolvers for Event Type
 	Event: {
+		// Resolves createdBy field
+		// Parameter: parent = the current Event document being resolved
 		createdBy: async (parent) => {
+			// Fetches the full User document based on the ID of User stored in the current Event document
 			const creator = await User.findById(parent.createdBy);
+			// Returns: Full User document
+
 			return creator;
 		},
+
+		// Resolves attendees field
+		// Parameter: parent = the current Event document being resolved
 		attendees: async (parent) => {
+			// Fetches an array of full User documents using the $in operator to check if the _id field in the User document matches any one of the IDs present in the parent.attendees array
+			// parent.attendees = array of User IDs stored in the current Event document
+
 			const attendees = await User.find({
 				_id: { $in: parent.attendees },
 			});
+			// Returns: Array of full User documents
 			return attendees;
 		},
 	},
 
+	// Query resolvers for Event Type
 	Query: {
+		// Resolves getEvent query
+		// Parameters:
+		//    args = requires id
+		//    context = checks for user
 		getEvent: async (parent, args, context) => {
 			try {
+				// Checks if the user has been authenticated
 				isAuthenticated(context);
 
+				// Fetches the full event document from the ID that has been provided in the args
 				const event = await Event.findById(args.id);
 
+				// Checks if the event exists and throws and error if it does not
 				if (!event) {
 					ErrorHandler.throwError(
+						// Error details
 						"Event does not exist",
 						"GET_EVENT_ERROR"
 					);
@@ -47,6 +88,7 @@ const resolvers = {
 				// Checks if the user has been authorised to access the event by checking if they're on the attendee list
 				isAttending(event, context);
 
+				// Returns: Full Event document
 				return event;
 			} catch (error) {
 				ErrorHandler.catchError(
@@ -57,22 +99,32 @@ const resolvers = {
 			}
 		},
 
+		// Resolves getUsersEvents query
+		// Parameters:
+		//    context = checks for user, uses user._id
 		getUsersEvents: async (parent, args, context) => {
 			try {
+				// Checks if the user has been authenticated
 				isAuthenticated(context);
 
+				// Gets the user's ID from the context
 				const userID = context.user._id;
 
+				// Fetches all the events where the user is has been listed as an attendee
 				const events = await Event.find({ attendees: userID });
 
+				// Checks if there are no events
 				if (!events.length) {
+					// Returns: Empty array
 					return [];
 				}
 
+				// Returns: Array of full Event documents
 				return events;
 			} catch (error) {
 				ErrorHandler.catchError(
 					error,
+					// Error details
 					`Failed to fetch events ${error.message}`,
 					"FETCH_EVENTS_ERROR"
 				);
@@ -80,41 +132,56 @@ const resolvers = {
 		},
 	},
 
+	// Mutation resolvers for Event Type
 	Mutation: {
+		// Resolves createEvent mutation
+		// Parameters
+		//    args = uses input
+		//    context = checks for user, uses user._id and user.username
 		createEvent: async (parent, args, context) => {
 			try {
+				// Checks if the user has been authenticated
 				isAuthenticated(context);
 
+				// Gets the user id and username from context to denote as the Event's creator
 				const creatorID = context.user._id;
 				const creatorUsername = context.user.username;
 
+				// Destructures attendees Array and the rest of the input data
 				const { attendees, ...inputData } = args.input;
 
+				// Gets processed username list that checks for existing usernames, changes all the usernames to IDs and checks that the creator always included and not duplicated
 				const finalAttendees = await processCreatorInUsernameList(
 					creatorID,
 					creatorUsername,
 					attendees
 				);
 
+				// Reconstructs the event data with the validated and processed data
 				const eventData = {
 					...inputData,
 					createdBy: creatorID,
 					attendees: finalAttendees,
 				};
 
+				// Validates the event
 				const { error, value } = validateEvent(eventData);
 
 				if (error) {
 					ErrorHandler.throwError(
+						// Error Details
 						`Invalid input data: ${error.details[0].message}`,
 						"BAD_USER_INPUT",
 						{ invalidArgs: args.input }
 					);
 				}
 
+				// Creates a new event document from the Event model
 				const event = new Event(value);
+				// Saves the new event document to the database
 				await event.save();
 
+				// Returns: Full Event document
 				return event;
 			} catch (error) {
 				ErrorHandler.catchError(
