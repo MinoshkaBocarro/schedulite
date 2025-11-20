@@ -5,7 +5,14 @@ const _ = require("lodash");
 const ErrorHandler = require("../../../utilities/errorHandler");
 
 // Import model
-const { User, validateUser, validateLogin } = require("../../models/user");
+const {
+	User,
+	validateUser,
+	validateLogin,
+	validateUserUpdate,
+} = require("../../models/user");
+
+// Import auth
 const { isAuthenticated, isTheSameUser } = require("../../helpers/auth");
 
 const resolvers = {
@@ -42,6 +49,7 @@ const resolvers = {
 				);
 			}
 		},
+
 		getUsers: async (parent, args) => {
 			try {
 				const users = await User.find();
@@ -119,6 +127,7 @@ const resolvers = {
 				);
 			}
 		},
+
 		loginUser: async (parent, args) => {
 			try {
 				const { error, value } = validateLogin(args.input);
@@ -178,6 +187,52 @@ const resolvers = {
 					error,
 					`Failed to login ${error.message}`,
 					"LOGIN_USER_ERROR"
+				);
+			}
+		},
+
+		updateUser: async (parent, args, context) => {
+			try {
+				isAuthenticated(context);
+
+				// Check for user
+				const user = await User.findById(args.id);
+
+				if (!user) {
+					ErrorHandler.throwError(
+						`User not found: ${error.message}`,
+						"USER_NOT_FOUND",
+						{
+							http: { status: 404 },
+						}
+					);
+				}
+
+				isTheSameUser(user, context);
+
+				const { error, value } = validateUserUpdate(args.input);
+
+				if (error) {
+					ErrorHandler.throwError(
+						`Invalid input data: ${error.details[0].message}`,
+						"BAD_USER_INPUT",
+						{ invalidArgs: args.input }
+					);
+				}
+
+				const updatedUser = await User.findByIdAndUpdate(
+					args.id,
+					value,
+					{
+						new: true,
+					}
+				);
+
+				return updatedUser;
+			} catch (error) {
+				ErrorHandler.catchError(
+					`Failed to update user:${error.message}`,
+					"UPDATE_USER_ERROR"
 				);
 			}
 		},

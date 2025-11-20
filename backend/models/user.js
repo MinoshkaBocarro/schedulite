@@ -97,6 +97,24 @@ function validateLogin(user) {
 	return schema.validate(user);
 }
 
+function validateUserUpdate(user) {
+	const schema = Joi.object({
+		username: Joi.string().min(3).max(50).lowercase().optional(),
+		password: Joi.string().min(8).max(1024).optional(),
+		// for testing purposes
+		email: Joi.string()
+			.email({ tlds: { allow: false } })
+			.min(5)
+			.max(255)
+			.optional(),
+		firstName: Joi.string().max(255).optional(),
+		lastName: Joi.string().max(255).optional(),
+	});
+
+	return schema.validate(user);
+}
+
 module.exports.User = User;
 module.exports.validateUser = validateUser;
 module.exports.validateLogin = validateLogin;
+module.exports.validateUserUpdate = validateUserUpdate;
