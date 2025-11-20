@@ -26,6 +26,7 @@
 		"date-fns": "^4.1.0",
 		"graphql": "^16.11.0",
 		"joi": "^18.0.1",
+		"jwt-decode": "^4.0.0",
 		"react": "^19.1.1",
 		"react-bootstrap": "^2.10.10",
 		"react-dom": "^19.1.1",
