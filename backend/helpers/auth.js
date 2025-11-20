@@ -38,5 +38,18 @@ function isTheSameUser(user, context) {
 	// Returns: Nothing
 }
 
+function isAttending(event, context) {
+	event.attendees.filter((attendeeUsername) => {
+		context.user.username === attendeeUsername;
+	});
+
+	if (!isAttending.length) {
+		"User is not authorised to perform this action",
+			"FORBIDDEN",
+			{ http: { status: 403 } };
+	}
+}
+
 module.exports.isAuthenticated = isAuthenticated;
 module.exports.isTheSameUser = isTheSameUser;
+module.exports.isAttending = isAttending;
