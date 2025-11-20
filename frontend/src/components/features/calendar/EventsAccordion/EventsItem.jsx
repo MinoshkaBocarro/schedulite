@@ -6,7 +6,6 @@ function EventsItem({
 	isActive,
 	onClickOpen,
 	onClickClose,
-	user,
 	refetchEvents,
 }) {
 	return (
@@ -15,7 +14,6 @@ function EventsItem({
 				<OpenEvent
 					cardData={cardData}
 					onClickClose={onClickClose}
-					user={user}
 					refetchEvents={refetchEvents}
 				/>
 			) : (

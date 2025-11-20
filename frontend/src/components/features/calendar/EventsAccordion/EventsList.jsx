@@ -2,13 +2,7 @@ import { useEffect } from "react";
 import MbButtonLink from "../../../common/MbButtonLink";
 import EventsItem from "./EventsItem";
 
-function EventsList({
-	events,
-	eventClick,
-	selectedEventID,
-	user,
-	refetchEvents,
-}) {
+function EventsList({ events, eventClick, selectedEventID, refetchEvents }) {
 	useEffect(() => {
 		refetchEvents();
 	}, []);
@@ -30,7 +24,6 @@ function EventsList({
 							onClickClose={() =>
 								eventClick({ event: { id: null } })
 							}
-							user={user}
 							refetchEvents={refetchEvents}
 						/>
 					);

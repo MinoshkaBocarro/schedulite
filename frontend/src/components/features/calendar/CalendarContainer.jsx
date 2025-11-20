@@ -65,7 +65,6 @@ function CalendarContainer() {
 				events={events}
 				eventClick={handleEventClick}
 				selectedEventID={selectedEventID}
-				user={user}
 				refetchEvents={refetch}
 			/>
 		</div>

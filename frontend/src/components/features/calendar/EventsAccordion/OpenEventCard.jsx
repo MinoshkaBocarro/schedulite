@@ -1,16 +1,22 @@
 import { useMutation, useQuery } from "@apollo/client/react";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import { format } from "date-fns";
 
+// GraphQL imports
 import { GET_EVENT } from "../../../../graphQL/queries/queries";
+import { DELETE_EVENT } from "../../../../graphQL/mutations/mutations";
+
+// Component imports
 import MbButtonLink from "../../../common/MbButtonLink";
 import MbButton from "../../../common/MbButton";
-import { DELETE_EVENT } from "../../../../graphQL/mutations/mutations";
 import MbLoader from "../../../common/MbLoader";
 import { toast } from "react-toastify";
+import AuthContext from "../../../../context/authContext";
 
-function OpenEventCard({ cardData, onClickClose, user, refetchEvents }) {
+function OpenEventCard({ cardData, onClickClose, refetchEvents }) {
+	const { getCurrentUser } = useContext(AuthContext);
+	const user = getCurrentUser();
 	const { id } = cardData;
 	const [eventData, setEventData] = useState();
 
@@ -34,7 +40,7 @@ function OpenEventCard({ cardData, onClickClose, user, refetchEvents }) {
 				variables: { eventID: id },
 			}) || { getEvent: null };
 
-			// If event exists, than update it with the updated event details
+			// TODO If event exists, than update it with the updated event details
 			if (getEvent) {
 				cache.writeQuery({
 					query: DELETE_EVENT,
@@ -62,7 +68,7 @@ function OpenEventCard({ cardData, onClickClose, user, refetchEvents }) {
 		}
 	}, [data]);
 
-	// style this properly
+	// TODO style this properly
 	if (loading) return <MbLoader />; //
 	// if (true) return <MbLoader />; //
 	if (error) {
