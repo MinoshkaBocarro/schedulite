@@ -1,5 +1,11 @@
+// Import packages
+const _ = require("lodash");
+
+// Import error handler
 const ErrorHandler = require("../../../utilities/errorHandler");
-const { User } = require("../../models/user");
+
+// Import model
+const { User, validateUser } = require("../../models/user");
 
 const resolvers = {
 	User: {
@@ -49,6 +55,62 @@ const resolvers = {
 					error,
 					`Failed to fetch users ${error.message}`,
 					"FETCH_USERS_ERROR"
+				);
+			}
+		},
+	},
+
+	Mutation: {
+		createUser: async (parent, args) => {
+			try {
+				const { error, value } = validateUser(args.input);
+
+				// Check if filled in user data is correct
+				if (error) {
+					ErrorHandler.throwError(
+						`Invalid input data: ${error.details[0].message}`,
+						"BAD_USER_INPUT",
+						{ invalidArgs: args.input }
+					);
+				}
+
+				// Check for existing user
+				const givenUsername = user.username;
+				const existingUser = await User.findOne({
+					username: givenUsername,
+				});
+
+				if (existingUser) {
+					ErrorHandler.throwError(
+						"The username already exists",
+						"BAD_USER_INPUT",
+						{ invalidArgs: user.username }
+					);
+				}
+
+				const user = new User(value);
+				await user.save();
+
+				// Generate auth token for the new user
+				const token = user.generateAuthToken();
+
+				// Construct user data
+				let userData = _.pick(user, [
+					"id",
+					"username",
+					"email",
+					"firstName",
+					"lastName",
+					"createdAt",
+				]);
+				userData.token = token;
+
+				return userData;
+			} catch (error) {
+				ErrorHandler.catchError(
+					error,
+					`Failed to create user ${error.message}`,
+					"CREATE_USER_ERROR"
 				);
 			}
 		},
