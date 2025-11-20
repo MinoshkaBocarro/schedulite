@@ -2,6 +2,10 @@
 const { ApolloServer } = require("@apollo/server");
 const { startStandaloneServer } = require("@apollo/server/standalone");
 
+// Load merge packages
+const { loadFilesSync } = require("@graphql-tools/load-files");
+const { mergeTypeDefs, mergeResolvers } = require("@graphql-tools/merge");
+
 // Import connection
 const { connect } = require("./helpers/connection");
 
@@ -22,8 +26,15 @@ if (!appPrivateKey && dbConnectionString) {
 	process.exit(1);
 }
 
+// Merge type definitions and resolvers
+const typeDefs = loadFilesSync("graphql/*/*-types.js");
+const resolvers = loadFilesSync("graphql/*/*-resolvers.js");
+
 async function startServer() {
-	const server = new ApolloServer();
+	const server = new ApolloServer({
+		typeDefs: typeDefs,
+		resolvers: resolvers,
+	});
 
 	const databaseName = dbName;
 	connect(`${dbConnectionString}${databaseName}`);
