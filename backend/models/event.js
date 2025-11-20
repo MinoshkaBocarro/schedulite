@@ -45,4 +45,19 @@ const eventSchema = new Schema(
 
 const Event = mongoose.model("Event", eventSchema);
 
+function validateEvent(event) {
+	const schema = Joi.object({
+		title: Joi.string().min(3).max(50).required(),
+		description: Joi.string().max(5000).optional().allow(null),
+		location: Joi.string().max(5000).optional().allow(null),
+		startTime: Joi.date().required(),
+		endTime: Joi.date().min(Joi.ref("startTime")).optional().allow(null),
+		attendees: Joi.array().items(Joi.objectId()).optional(),
+		createdBy: Joi.objectId().required(),
+	});
+
+	return schema.validate(event);
+}
+
 module.exports.Event = Event;
+module.exports.validateEvent = validateEvent;
