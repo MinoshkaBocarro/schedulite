@@ -10,7 +10,8 @@ import { useState, useEffect } from "react";
 
 // Page Imports
 import Layout from "./components/layout/Layout";
-import Login from "./pages/Login";
+import Login from "./pages/Login.jsx";
+import SignUp from "./pages/SignUp";
 
 // Import Apollo CLient
 import { ApolloClient, HttpLink, InMemoryCache } from "@apollo/client";
@@ -33,6 +34,7 @@ function App() {
 						<Routes>
 							<Route path="/" element={<Layout />}>
 								<Route path="login" element={<Login />} />
+								<Route path="signup" element={<SignUp />} />
 							</Route>
 						</Routes>
 					</AuthProvider>

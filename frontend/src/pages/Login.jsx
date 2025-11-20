@@ -5,7 +5,7 @@ import Joi from "joi";
 
 // Apollo and graphQL
 import { useMutation } from "@apollo/client/react";
-import { CREATE_USER } from "../../graphQL/mutations/mutations";
+import { LOGIN_USER } from "../../graphQL/mutations/mutations";
 
 // React imports
 import { useContext, useEffect, useState } from "react";
@@ -42,7 +42,7 @@ function SignUp() {
 	});
 
 	// Apollo Client Mutation
-	const [createUser, { loading, error }] = useMutation(CREATE_USER, {});
+	const [loginUser, { loading, error }] = useMutation(LOGIN_USER);
 
 	const [errorMessage, setErrorMessage] = useState("");
 
@@ -53,7 +53,7 @@ function SignUp() {
 		event.preventDefault();
 		const { username, password } = data;
 		try {
-			const result = await createUser({
+			const result = await loginUser({
 				variables: {
 					input: {
 						username,
@@ -87,7 +87,7 @@ function SignUp() {
 	return (
 		<div className="login-signup">
 			<MbContainer>
-				<Title>Sign Up</Title>
+				<Title>Login</Title>
 				<div className="sign-in-up">
 					<Form
 						noValidate="NoValidate"
@@ -152,8 +152,8 @@ function SignUp() {
 						</MbButton>
 					</Form>
 					<p className="m-0 mt-1">
-						Already have an account? <Link to="/login">Login</Link>{" "}
-						now!
+						Don't have an account?{" "}
+						<Link to="/signup"> Sign up</Link> now!
 					</p>
 				</div>
 			</MbContainer>
