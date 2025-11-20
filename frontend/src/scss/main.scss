@@ -1,0 +1,22 @@
+/** TABLE OF CONTENTS
+    -- vendor imports
+    -- base imports
+    -- component imports
+    -- layout imports
+    -- pages imports
+ **/
+
+// vendor imports
+@use "./vendors/bootstrap";
+
+// base imports
+@use "./base/base";
+
+// component imports
+
+// layout imports
+@use "./layout/header";
+@use "./layout/footer";
+@use "./layout/appContent";
+
+// pages imports

@@ -1,0 +1,20 @@
+@use "./variables" as *;
+
+%barBase {
+	width: 100vw;
+	padding: 10px 0;
+	font-weight: 600;
+}
+
+%buttonBase {
+	font-size: 1rem;
+	min-width: max-content;
+	width: fit-content;
+	// height: 55px;
+	padding: 10px 20px;
+	border-radius: 8px;
+	// TODO: Settle on button colour
+	background-color: $accentColor;
+	color: $textColor;
+	box-shadow: 5px 5px 13px 0px #00000029;
+}

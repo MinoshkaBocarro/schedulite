@@ -1,0 +1,36 @@
+@use "../abstracts/" as *;
+
+#navbar {
+	@extend %barBase;
+	height: 70px;
+	margin-top: 5px;
+	border-bottom: 1px solid $edgeColor;
+}
+
+.navbar {
+	.nav-link {
+		color: inherit;
+
+		&:hover {
+			color: $accentColorMuted;
+		}
+	}
+}
+
+.navbar-brand {
+	color: $accentColor;
+	font-family: $accentFontStack;
+
+	&:hover {
+		color: $accentColorMuted;
+	}
+}
+
+.favicon {
+	height: 60px;
+	width: 60px;
+}
+
+.container-fluid {
+	padding: 0 3rem;
+}

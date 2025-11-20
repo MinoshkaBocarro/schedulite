@@ -1,0 +1,19 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+
+@import url("https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100..900;1,100..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+
+//Colour Sheet
+$secondaryColor: #84ceeb;
+$accentColor: #4db6ac;
+$accentColorMuted: #c68dae;
+$backgroundColor: #1c1c23;
+$backgroundColorLight: #111113;
+$textColor: #f0f4f8;
+$edgeColor: #4a4c62;
+
+//Font Stacks
+$primaryFontStack: "Inter", "Open Sans", apple-system, sans-serif;
+$accentFontStack: "Exo 2", Georgia, "Times New Roman", Times, serif;
+
+// App Content Height
+$pageHeight: 150px;

@@ -1,0 +1,48 @@
+@use "../abstracts/" as *;
+
+body {
+	color: $textColor;
+	font-family: $primaryFontStack;
+	background: $backgroundColor;
+	box-sizing: border-box;
+	font-size: 1.3rem;
+}
+
+#app {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	position: relative;
+}
+
+// reset button
+button {
+	appearance: none;
+	background: none;
+	box-shadow: none;
+	border: none;
+}
+
+ul {
+	margin: 0;
+	padding: 0;
+}
+
+.button-container {
+	display: flex;
+	justify-content: center;
+	gap: 10px;
+}
+
+form {
+	margin: 2rem 3rem;
+	background-color: $backgroundColorLight;
+
+	// input.form-control {
+	// 	background-color: pink;
+	// }
+
+	// input.form-control {
+	// background-color: pink;
+	// }
+}
