@@ -5,7 +5,7 @@ const _ = require("lodash");
 const ErrorHandler = require("../../../utilities/errorHandler");
 
 // Import model
-const { User, validateUser } = require("../../models/user");
+const { User, validateUser, validateLogin } = require("../../models/user");
 const { isAuthenticated, isTheSameUser } = require("../../helpers/auth");
 
 const resolvers = {
