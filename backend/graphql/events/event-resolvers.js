@@ -29,13 +29,35 @@ const resolvers = {
 					);
 				}
 
+				// Checks if the user has been authorised to access the event by checking if they're on the attendee list
 				isAttending(event, context);
 
 				return event;
 			} catch (error) {
-				throw new GraphQLError(
+				ErrorHandler.catchError(
 					`Failed to fetch event: ${error.message}`,
-					{ extensions: { code: "FETCH_EVENT_ERROR" } }
+					"FETCH_EVENT_ERROR"
+				);
+			}
+		},
+
+		getUsersEvents: async (parent, args, context) => {
+			try {
+				isAuthenticated(context);
+
+				const userID = context.user._id;
+
+				const events = await Event.find({ attendees: userID });
+
+				if (!events.length) {
+					return [];
+				}
+
+				return events;
+			} catch (error) {
+				ErrorHandler.catchError(
+					`Failed to fetch events ${error.message}`,
+					"FETCH_EVENTS_ERROR"
 				);
 			}
 		},

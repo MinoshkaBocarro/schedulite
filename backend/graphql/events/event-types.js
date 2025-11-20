@@ -34,7 +34,7 @@ const eventTypeDefs = gql`
 
 	type Query {
 		getEvent(id: ID!): Event
-		getEvents: [Event]
+		getUsersEvents: [Event]
 	}
 
 	type Mutation {
