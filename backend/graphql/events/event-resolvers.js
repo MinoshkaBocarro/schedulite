@@ -199,6 +199,43 @@ const resolvers = {
 				);
 			}
 		},
+
+		// Resolves deleteEvent mutation
+		// Parameters
+		//    args = uses id
+		//    context = checks for user, uses user._id
+		deleteEvent: async (parent, args, context) => {
+			try {
+				// Checks if the user has been authenticated
+				isAuthenticated(context);
+
+				// Fetches the full event document from the ID that has been provided in the args
+				const event = await Event.findById(args.id);
+
+				// Checks if the event exists and throws and error if it does not
+				if (!event) {
+					ErrorHandler.throwError(
+						`Event does not exist`,
+						"DELETE_EVENT_ERROR"
+					);
+				}
+
+				// Checks if the user is the creator before proceeding
+				isEventCreator(event, context);
+
+				// Deletes the event document in the database by finding its ID
+				const deletedEvent = await Event.findByIdAndDelete(args.id);
+
+				// Returns: Full Event document
+				return deletedEvent;
+			} catch (error) {
+				ErrorHandler.catchError(
+					error,
+					`Failed to delete event:: ${error.message}`,
+					"DELETE_EVENT_ERROR"
+				);
+			}
+		},
 	},
 };
 
