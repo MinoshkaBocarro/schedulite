@@ -5,7 +5,7 @@ import Joi from "joi";
 
 // Apollo and graphQL
 import { useMutation } from "@apollo/client/react";
-import { LOGIN_USER } from "../../graphQL/mutations/mutations";
+import { LOGIN_USER } from "../graphQL/mutations/mutations";
 
 // React imports
 import { useContext, useEffect, useState } from "react";
@@ -16,10 +16,9 @@ import { Form } from "react-bootstrap";
 import { toast } from "react-toastify";
 
 // Component imports
-import Title from "../../common/Title";
-import MbContainer from "../../common/MbContainer";
-import MbContainer from "../components/common/MbLoader";
-import MbButton from "../common/MbButton";
+import Title from "../components/common/Title";
+import MbContainer from "../components/common/MbContainer";
+import MbButton from "../components/common/MbButton";
 import MbLoader from "../components/common/MbLoader";
 import AuthContext from "../context/authContext";
 
@@ -72,6 +71,7 @@ function Login() {
 
 	useEffect(() => {
 		// Double pop up only in dev mode
+		console.log(location.state);
 		if (location.state && location.state.showNotLoggedInToast) {
 			toast.warn("You are not logged in");
 			navigate("/login", { replace: true });
@@ -81,6 +81,8 @@ function Login() {
 	if (error) {
 		setErrorMessage(error);
 	}
+
+	console.log(loading);
 
 	if (loading) {
 		return <MbLoader />;
@@ -155,7 +157,7 @@ function Login() {
 							className="w-100 mt-2"
 							type="submit"
 						>
-							{inOrUp === "up" ? "Sign Up" : "Login"}
+							Login
 							<i className="bi bi-send-fill"></i>
 						</MbButton>
 					</Form>

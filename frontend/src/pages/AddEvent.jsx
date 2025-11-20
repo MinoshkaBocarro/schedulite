@@ -26,7 +26,7 @@ import AuthContext from "../context/authContext";
 // Component Imports
 // import { MbButtonLink } from "../components/common/MbButtonLink";
 
-function AddEvent({ user }) {
+function AddEvent() {
 	const navigate = useNavigate();
 	const { getCurrentUser } = useContext(AuthContext);
 	const user = getCurrentUser();

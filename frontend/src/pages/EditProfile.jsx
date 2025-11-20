@@ -1,17 +1,24 @@
+// Apollo and GraphQL Imports
 import { useMutation, useQuery } from "@apollo/client/react";
 import { GET_USER } from "../graphQL/queries/queries";
-import { Alert, Button, Card, Col, Form, Row } from "react-bootstrap";
-import { useContext, useEffect, useState } from "react";
 import { UPDATE_USER } from "../graphQL/mutations/mutations";
+
+// React IMports
+import { useContext, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+
+// Form Component Imports
+import { Card, Form } from "react-bootstrap";
 import { Controller, useForm } from "react-hook-form";
 import { joiResolver } from "@hookform/resolvers/joi";
 import Joi from "joi";
-import MbContainer from "../components/common/common/MbContainer";
-import MbButton from "../components/common/common/MbButton";
+
+// Component Imports
+import MbContainer from "../components/common/MbContainer";
+import MbButton from "../components/common/MbButton";
 import { toast } from "react-toastify";
 import MbButtonLink from "../components/common/MbButtonLink";
 import MbLoader from "../components/common/MbLoader";
-import { useNavigate } from "react-router-dom";
 
 function EditProfile() {
 	const schema = Joi.object({

@@ -5,7 +5,7 @@ import Joi from "joi";
 
 // Apollo and graphQL
 import { useMutation } from "@apollo/client/react";
-import { CREATE_USER } from "../../graphQL/mutations/mutations";
+import { CREATE_USER } from "../graphQL/mutations/mutations";
 
 // React imports
 import { useContext, useEffect, useState } from "react";
@@ -16,10 +16,9 @@ import { Form } from "react-bootstrap";
 import { toast } from "react-toastify";
 
 // Component imports
-import Title from "../../common/Title";
-import MbContainer from "../../common/MbContainer";
-import MbContainer from "../components/common/MbLoader";
-import MbButton from "../common/MbButton";
+import Title from "../components/common/Title";
+import MbContainer from "../components/common/MbContainer";
+import MbButton from "../components/common/MbButton";
 import MbLoader from "../components/common/MbLoader";
 import AuthContext from "../context/authContext";
 
@@ -147,7 +146,7 @@ function SignUp() {
 							className="w-100 mt-2"
 							type="submit"
 						>
-							{inOrUp === "up" ? "Sign Up" : "Login"}
+							Sign Up
 							<i className="bi bi-send-fill"></i>
 						</MbButton>
 					</Form>

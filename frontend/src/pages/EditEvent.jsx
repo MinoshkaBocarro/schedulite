@@ -21,7 +21,7 @@ import { processAttendeeArray } from "../helpers/attendeeProcessing";
 
 // Component Imports
 import MbButtonLink from "../components/common/MbButtonLink";
-import MbButton from "../components/common/common/MbButton";
+import MbButton from "../components/common/MbButton";
 import { toast } from "react-toastify";
 
 function EditEvent({ user }) {

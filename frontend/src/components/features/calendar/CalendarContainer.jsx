@@ -51,7 +51,6 @@ function CalendarContainer() {
 		setSelectedEventID(eventID);
 	};
 
-	// style this properly
 	if (loading) return <MbLoader />; //
 	if (error) {
 		toast.error(error.message);

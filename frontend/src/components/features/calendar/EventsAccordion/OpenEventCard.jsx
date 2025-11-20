@@ -68,9 +68,9 @@ function OpenEventCard({ cardData, onClickClose, refetchEvents }) {
 		}
 	}, [data]);
 
-	// TODO style this properly
+	// TODO delete
+	console.log(loading);
 	if (loading) return <MbLoader />; //
-	// if (true) return <MbLoader />; //
 	if (error) {
 		toast.error(error.message);
 	}

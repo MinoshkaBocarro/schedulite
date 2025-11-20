@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import { Navigate, useLocation } from "react-router-dom";
 import MbLoader from "../components/common/MbLoader";
 
@@ -56,32 +56,12 @@ export function AuthProvider({ children }) {
 		}
 	};
 
-	function ProtectedRoute({ component: Component, ...rest }) {
-		const user = getUserFromLocalStorage();
-		if (!user) {
-			return (
-				<Navigate
-					to="/login"
-					state={{
-						from: location,
-						showNotLoggedInToast: !location.state?.loggingOut
-							? false
-							: true,
-					}}
-					replace
-				/>
-			);
-		}
-		return <Component {...rest} />;
-	}
-
 	const value = {
 		user,
-		ProtectedRoute,
-		logout,
 		getCurrentUser,
 		saveUser,
 		handleLogout,
+		getUserFromLocalStorage,
 	};
 
 	if (userLoading) {
@@ -89,7 +69,9 @@ export function AuthProvider({ children }) {
 	}
 
 	return (
-		<AuthProvider.Provider value={value}>{children}</AuthProvider.Provider>
+		<AuthContext.Provider check={"check"} value={value}>
+			{children}
+		</AuthContext.Provider>
 	);
 }
 
