@@ -39,3 +39,4 @@ function isTheSameUser(user, context) {
 }
 
 module.exports.isAuthenticated = isAuthenticated;
+module.exports.isTheSameUser = isTheSameUser;

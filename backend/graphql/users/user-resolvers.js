@@ -6,6 +6,7 @@ const ErrorHandler = require("../../../utilities/errorHandler");
 
 // Import model
 const { User, validateUser } = require("../../models/user");
+const { isAuthenticated, isTheSameUser } = require("../../helpers/auth");
 
 const resolvers = {
 	User: {
@@ -15,8 +16,10 @@ const resolvers = {
 		},
 	},
 	Query: {
-		getUser: async (parent, args) => {
+		getUser: async (parent, args, context) => {
 			try {
+				isAuthenticated(context);
+
 				// Get the user by id
 				const user = await User.findById(args.id);
 
@@ -27,6 +30,8 @@ const resolvers = {
 						"GET_USER_ERROR"
 					);
 				}
+
+				isTheSameUser(user, context);
 
 				return user;
 			} catch (error) {
