@@ -13,6 +13,35 @@ const eventTypeDefs = gql`
 		createdBy: User!
 		attendees: [User]
 	}
+
+	input CreateEventInput {
+		title: String!
+		description: String
+		location: String
+		startTime: DateTime!
+		endTime: DateTime
+		attendees: [ID]
+	}
+
+	input UpdateEventInput {
+		title: String
+		description: String
+		location: String
+		startTime: DateTime
+		endTime: DateTime
+		attendees: [ID]
+	}
+
+	type Query {
+		getEvent(id: ID!): Event
+		getEvents: [Event]
+	}
+
+	type Mutation {
+		createEvent(input: CreateEventInput): Event
+		updateEvent(id: ID!, input: UpdateEventInput!): Event
+		deleteEvent(id: ID!): Event
+	}
 `;
 
 module.exports = eventTypeDefs;
