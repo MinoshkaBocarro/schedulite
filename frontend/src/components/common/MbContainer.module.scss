@@ -1,0 +1,11 @@
+@use "../../scss/abstracts/" as *;
+
+.container {
+	background-color: $backgroundColorLight;
+	padding: 1.5rem;
+	border-radius: 8px;
+	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}

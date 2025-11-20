@@ -1,0 +1,10 @@
+@use "../../scss/abstracts/" as *;
+
+.title {
+	font-size: 3rem;
+	margin: 25px 0;
+	font-family: $accentFontStack;
+	font-weight: 600;
+	width: max-content;
+	color: $accentColor;
+}

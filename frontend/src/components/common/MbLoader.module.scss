@@ -1,0 +1,16 @@
+@use "../../scss/abstracts/" as *;
+
+.loadingContainer {
+	min-height: 50vh;
+	display: flex;
+	flex: 1;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+.loadingSpinner {
+	color: $accentColorMuted;
+	width: 10rem !important;
+	height: 10rem !important;
+}

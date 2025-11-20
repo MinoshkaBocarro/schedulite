@@ -1,0 +1,12 @@
+@use "../../scss/abstracts/" as *;
+
+.button {
+	@extend %buttonBase;
+	display: flex;
+	align-items: center;
+	text-decoration: none;
+
+	svg {
+		width: 40px;
+	}
+}

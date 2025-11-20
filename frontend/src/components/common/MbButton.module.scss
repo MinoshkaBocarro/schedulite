@@ -1,0 +1,6 @@
+@use "../../scss/abstracts/" as *;
+
+.button {
+	@extend %buttonBase;
+	height: min-content;
+}
