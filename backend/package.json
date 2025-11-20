@@ -1,0 +1,32 @@
+{
+	"name": "assessment",
+	"version": "1.0.0",
+	"description": "Assessment code for fullstack class",
+	"license": "ISC",
+	"author": "",
+	"type": "commonjs",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"dev": "nodemon src/index"
+	},
+	"dependencies": {
+		"@apollo/server": "^5.0.0",
+		"@graphql-tools/load-files": "^7.0.1",
+		"@graphql-tools/merge": "^9.1.1",
+		"apollo-server": "^3.13.0",
+		"bcrypt": "^6.0.0",
+		"config": "^4.1.1",
+		"dotenv": "^17.2.3",
+		"graphql": "^16.11.0",
+		"graphql-scalars": "^1.25.0",
+		"graphql-tag": "^2.12.6",
+		"graphql-tools": "^9.0.20",
+		"joi": "^18.0.1",
+		"joi-objectid": "^4.0.2",
+		"jsonwebtoken": "^9.0.2",
+		"lodash": "^4.17.21",
+		"mongoose": "^8.19.1",
+		"nodemon": "^3.1.10"
+	}
+}
