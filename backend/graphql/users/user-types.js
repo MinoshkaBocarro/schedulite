@@ -11,6 +11,22 @@ const userTypeDefs = gql`
 		token: String
 	}
 
+	input CreateUserInput {
+		username: String!
+		password: String!
+		email: String
+		firstName: String
+		lastName: String
+	}
+
+	input UpdateUserInput {
+		username: String
+		password: String
+		email: String
+		firstName: String
+		lastName: String
+	}
+
 	type Query {
 		getUser(id: ID!): User
 		getUsers: [User]
