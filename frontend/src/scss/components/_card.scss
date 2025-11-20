@@ -1,0 +1,43 @@
+@use "../abstracts/" as *;
+
+.card {
+	text-align: center;
+	background-color: $backgroundColor;
+	background-color: $backgroundColor;
+	color: $textColor;
+	padding: 13px;
+	border-color: $edgeColor;
+}
+
+.card.open {
+	overflow: scroll;
+
+	p {
+		margin: 0.5rem 0;
+		font-size: 1rem;
+	}
+
+	.event-title {
+		font-weight: bold;
+		font-size: 1.25rem;
+		color: $accentColor; // Highlight the title
+	}
+
+	.event-description,
+	.event-location {
+		font-style: italic;
+	}
+}
+
+.card.closed {
+	cursor: pointer;
+	min-height: min-content;
+	&.card-heading {
+		h3 {
+			margin: 0;
+			font-size: 1rem;
+			font-weight: bold;
+			color: $accentColor; // Highlight the title
+		}
+	}
+}

@@ -1,0 +1,102 @@
+@use "../abstracts/" as *;
+
+.calendar-container {
+	display: flex;
+	gap: 1rem;
+	flex: 1;
+	padding: 2rem 3rem;
+	color: $accentColor;
+	max-height: calc(100vh - $pageHeight);
+	height: 100%;
+
+	.full-calendar-container,
+	.events-container {
+		background-color: $backgroundColorLight;
+		border: 1px solid $edgeColor;
+		padding: 1.5rem;
+		border-radius: 15px;
+	}
+
+	.full-calendar-container {
+		flex: 3;
+		min-width: 0;
+		max-height: 100%;
+		min-height: 100%;
+
+		a {
+			color: $accentColor;
+		}
+
+		.fc-daygrid-event-dot {
+			border-color: $secondaryColor;
+		}
+
+		.fc-daygrid-day-events a {
+			color: $accentColorMuted;
+		}
+
+		.fc-daygrid-day-number {
+			color: $textColor;
+		}
+	}
+
+	.events-container {
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+		gap: 10px;
+		// overflow-y: auto;
+		overflow: scroll;
+		padding: 1rem;
+
+		.add-event {
+			display: flex;
+			justify-content: end;
+		}
+
+		.events-list {
+			display: flex;
+			flex-direction: column;
+			overflow-y: scroll;
+			gap: 0.5rem;
+			padding: 0.5rem;
+			padding-bottom: 2rem;
+		}
+
+		.card.open {
+			padding: 1rem;
+			border-radius: 0.5rem;
+			box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+			p {
+				margin: 0.5rem 0;
+				font-size: 1rem;
+			}
+
+			.event-title {
+				font-weight: bold;
+				font-size: 1.25rem;
+			}
+
+			.event-description,
+			.event-location {
+				font-style: italic;
+			}
+
+			.event-attendees {
+				margin-top: 0.5rem;
+				ul {
+					padding-left: 1rem;
+					li {
+						list-style-type: none;
+					}
+				}
+			}
+
+			.event-createdBy {
+				margin-top: 0.5rem;
+				font-size: 0.9rem;
+				color: grey;
+			}
+		}
+	}
+}

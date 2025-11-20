@@ -1,0 +1,23 @@
+@use "../abstracts/" as *;
+
+.sign-in-up {
+	min-width: 500px;
+	min-height: 300px;
+	display: grid;
+	grid-template-rows: 1fr min-content;
+
+	form {
+		text-align: center;
+		display: grid;
+		grid-template-rows: 1fr;
+		align-items: center;
+	}
+
+	p {
+		text-align: center;
+	}
+
+	button {
+		justify-self: center;
+	}
+}

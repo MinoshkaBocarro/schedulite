@@ -13,6 +13,9 @@
 @use "./base/base";
 
 // component imports
+@use "./components/card";
+@use "./components/calendarContainer";
+@use "./components/signInUp";
 
 // layout imports
 @use "./layout/header";
@@ -20,3 +23,7 @@
 @use "./layout/appContent";
 
 // pages imports
+@use "./pages/homePage";
+@use "./pages/loginPage";
+@use "./pages/profilePage";
+@use "./pages/editEventPage";
