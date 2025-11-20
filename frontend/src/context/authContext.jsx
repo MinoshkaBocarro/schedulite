@@ -1,5 +1,5 @@
 import { createContext, useState } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
 import MbLoader from "../components/common/MbLoader";
 
 const AuthContext = createContext();
@@ -8,6 +8,7 @@ export function AuthProvider({ children }) {
 	// Define the context items
 	const [user, setUser] = useState(null);
 	const [userLoading, setUserLoading] = useState(true);
+	const location = useLocation();
 
 	// Call current user on every page mount
 	useEffect(() => {
@@ -58,12 +59,30 @@ export function AuthProvider({ children }) {
 	function ProtectedRoute({ component: Component, ...rest }) {
 		const user = getUserFromLocalStorage();
 		if (!user) {
-			return <Navigate to="/login" replace />;
+			return (
+				<Navigate
+					to="/login"
+					state={{
+						from: location,
+						showNotLoggedInToast: !location.state?.loggingOut
+							? false
+							: true,
+					}}
+					replace
+				/>
+			);
 		}
 		return <Component {...rest} />;
 	}
 
-	const value = { user, ProtectedRoute, logout, getCurrentUser, handleLogin };
+	const value = {
+		user,
+		ProtectedRoute,
+		logout,
+		getCurrentUser,
+		handleLogin,
+		handleLogout,
+	};
 
 	if (userLoading) {
 		return <MbLoader />;

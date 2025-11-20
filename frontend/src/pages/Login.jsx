@@ -9,7 +9,7 @@ import { LOGIN_USER } from "../../graphQL/mutations/mutations";
 
 // React imports
 import { useContext, useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Form } from "react-bootstrap";
 
 // Toast import
@@ -23,8 +23,10 @@ import MbButton from "../common/MbButton";
 import MbLoader from "../components/common/MbLoader";
 import AuthContext from "../context/authContext";
 
-function SignUp() {
+function Login() {
 	const { handleLogin } = useContext(AuthContext);
+	const navigate = useNavigate();
+	const location = useLocation();
 
 	const schema = Joi.object({
 		username: Joi.string().min(3).max(50).lowercase().required(),
@@ -45,8 +47,6 @@ function SignUp() {
 	const [loginUser, { loading, error }] = useMutation(LOGIN_USER);
 
 	const [errorMessage, setErrorMessage] = useState("");
-
-	const navigate = useNavigate();
 
 	// Submit New User
 	const onSubmit = async (data, event) => {
@@ -69,6 +69,14 @@ function SignUp() {
 			setErrorMessage(error.message);
 		}
 	};
+
+	useEffect(() => {
+		// Double pop up only in dev mode
+		if (location.state && location.state.showNotLoggedInToast) {
+			toast.warn("You are not logged in");
+			navigate("/login", { replace: true });
+		}
+	}, [location.state]);
 
 	if (error) {
 		setErrorMessage(error);
@@ -161,4 +169,4 @@ function SignUp() {
 	);
 }
 
-export default SignUp;
+export default Login;
