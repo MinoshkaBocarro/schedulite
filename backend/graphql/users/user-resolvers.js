@@ -87,9 +87,8 @@ const resolvers = {
 						{ invalidArgs: args.input }
 					);
 				}
-
 				// Check for existing user
-				const givenUsername = user.username;
+				const givenUsername = value.username;
 				const existingUser = await User.findOne({
 					username: givenUsername,
 				});
@@ -98,7 +97,7 @@ const resolvers = {
 					ErrorHandler.throwError(
 						"The username already exists",
 						"BAD_USER_INPUT",
-						{ invalidArgs: user.username }
+						{ invalidArgs: value.username }
 					);
 				}
 
