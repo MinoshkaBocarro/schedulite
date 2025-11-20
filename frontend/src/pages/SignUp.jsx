@@ -24,7 +24,7 @@ import MbLoader from "../components/common/MbLoader";
 import AuthContext from "../context/authContext";
 
 function SignUp() {
-	const { handleLogin } = useContext(AuthContext);
+	const { saveUser } = useContext(AuthContext);
 
 	const schema = Joi.object({
 		username: Joi.string().min(3).max(50).lowercase().required(),
@@ -62,7 +62,7 @@ function SignUp() {
 				},
 			});
 
-			handleLogin(result.data.createUser);
+			saveUser(result.data.createUser);
 			setErrorMessage("");
 			navigate("/");
 		} catch (error) {

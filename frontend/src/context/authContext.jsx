@@ -23,7 +23,7 @@ export function AuthProvider({ children }) {
 		localStorage.setItem("user", JSON.stringify(user));
 	}
 
-	const handleLogin = (user) => {
+	const saveUser = (user) => {
 		setUser(user);
 		saveTokenToLocalStorage(user);
 	};
@@ -80,7 +80,7 @@ export function AuthProvider({ children }) {
 		ProtectedRoute,
 		logout,
 		getCurrentUser,
-		handleLogin,
+		saveUser,
 		handleLogout,
 	};
 

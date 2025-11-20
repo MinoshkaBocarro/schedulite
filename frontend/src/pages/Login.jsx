@@ -24,7 +24,7 @@ import MbLoader from "../components/common/MbLoader";
 import AuthContext from "../context/authContext";
 
 function Login() {
-	const { handleLogin } = useContext(AuthContext);
+	const { saveUser } = useContext(AuthContext);
 	const navigate = useNavigate();
 	const location = useLocation();
 
@@ -62,7 +62,7 @@ function Login() {
 				},
 			});
 
-			handleLogin(result.data.createUser);
+			saveUser(result.data.createUser);
 			setErrorMessage("");
 			navigate("/");
 		} catch (error) {

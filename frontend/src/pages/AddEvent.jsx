@@ -14,8 +14,8 @@ import Joi from "joi";
 import { CREATE_EVENT } from "../graphQL/mutations/mutations";
 
 // Component Imports
-import MbButton from "../../../done/common/MbButton";
-import MbButtonLink from "../../../done/common/MbButtonLink";
+import MbButton from "../components/common/MbButton";
+import MbButtonLink from "../components/common/MbButtonLink";
 
 // Function Imports
 import { processAttendeeArray } from "../helpers/attendeeProcessing";

@@ -13,6 +13,11 @@ import Home from "./pages/Home";
 import Layout from "./components/layout/Layout";
 import Login from "./pages/Login.jsx";
 import SignUp from "./pages/SignUp";
+import EditEvent from "./pages/EditEvent";
+import AddEvent from "./pages/AddEvent";
+import Profile from "./pages/Profile";
+import EditProfile from "./pages/EditProfile.jsx";
+import NotFound from "./pages/NotFound";
 
 // Import Apollo CLient
 import { ApolloClient, HttpLink, InMemoryCache } from "@apollo/client";
@@ -57,6 +62,24 @@ function App() {
 										<ProtectedRoute
 											component={EditEvent}
 											user={user}
+										/>
+									}
+								/>
+								<Route
+									path="profile"
+									element={
+										<ProtectedRoute
+											component={Profile}
+											user={user}
+											setUser={setUser}
+										/>
+									}
+								/>
+								<Route
+									path="profile/edit/:profileID"
+									element={
+										<ProtectedRoute
+											component={EditProfile}
 										/>
 									}
 								/>
