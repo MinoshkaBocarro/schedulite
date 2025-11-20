@@ -39,9 +39,27 @@ function App() {
 									element={
 										<ProtectedRoute component={Home} />
 									}
-								></Route>
+								/>
 								<Route path="login" element={<Login />} />
 								<Route path="signup" element={<SignUp />} />
+								<Route
+									path="event/add"
+									element={
+										<ProtectedRoute
+											component={AddEvent}
+											user={user}
+										/>
+									}
+								/>
+								<Route
+									path="event/edit/:eventID"
+									element={
+										<ProtectedRoute
+											component={EditEvent}
+											user={user}
+										/>
+									}
+								/>
 							</Route>
 							<Route path="*" element={<NotFound />} />
 						</Routes>
