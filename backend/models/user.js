@@ -1,3 +1,13 @@
+// Import Joi
+const Joi = require("joi");
+Joi.objectId = require("joi-objectid")(Joi);
+
+// Import packages
+const config = require("config");
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
+
+// Import mongoose
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 

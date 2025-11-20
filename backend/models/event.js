@@ -1,9 +1,10 @@
+// Import Joi
 const Joi = require("joi");
 Joi.objectId = require("joi-objectid")(Joi);
 
+// Import mongoose
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-// double check these defaults
 const eventSchema = new Schema(
 	{
 		title: {
