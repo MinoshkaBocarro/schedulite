@@ -15,7 +15,35 @@ function Header({ user }) {
 				</Navbar.Brand>
 				<Navbar.Toggle aria-controls="basic-navbar-nav" />
 				<Navbar.Collapse id="basic-navbar-nav">
-					<Nav className="ms-auto navbar-custom"></Nav>
+					<Nav className="ms-auto navbar-custom">
+						{user ? (
+							<Nav.Link
+								as={Link}
+								to="/profile"
+								className="px-3 fs-5 align-items-center"
+							>
+								<span className="me-2">{user.username}</span>
+								<Icon path={mdiAccountCircle} size={1} />
+							</Nav.Link>
+						) : (
+							<>
+								<Nav.Link
+									as={Link}
+									to="/signup"
+									className="px-3 fs-5"
+								>
+									Sign Up
+								</Nav.Link>
+								<Nav.Link
+									as={Link}
+									to="/login"
+									className="px-3 fs-5"
+								>
+									Log In
+								</Nav.Link>
+							</>
+						)}
+					</Nav>
 				</Navbar.Collapse>
 			</Container>
 		</Navbar>
