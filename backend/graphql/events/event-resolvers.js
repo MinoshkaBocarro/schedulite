@@ -18,7 +18,7 @@
 const _ = require("lodash");
 
 // Error Handler Imports
-const ErrorHandler = require("../../../utilities/errorHandler");
+const ErrorHandler = require("../../utilities/errorHandler");
 
 // Auth Imports
 const {

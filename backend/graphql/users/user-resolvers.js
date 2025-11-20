@@ -2,7 +2,7 @@
 const _ = require("lodash");
 
 // Import error handler
-const ErrorHandler = require("../../../utilities/errorHandler");
+const ErrorHandler = require("../../utilities/errorHandler");
 
 // Import models
 const {
