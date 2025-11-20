@@ -8,7 +8,7 @@ import { useMutation } from "@apollo/client/react";
 import { CREATE_USER } from "../../graphQL/mutations/mutations";
 
 // React imports
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Form } from "react-bootstrap";
 
@@ -21,8 +21,11 @@ import MbContainer from "../../done/common/MbContainer";
 import MbContainer from "../components/common/MbLoader";
 import MbButton from "../common/MbButton";
 import MbLoader from "../components/common/MbLoader";
+import AuthContext from "../context/authContext";
 
-function SignUp({ onLogin }) {
+function SignUp() {
+	const { handleLogin } = useContext(AuthContext);
+
 	const schema = Joi.object({
 		username: Joi.string().min(3).max(50).lowercase().required(),
 		password: Joi.string().min(8).max(1024).required(),
@@ -88,7 +91,7 @@ function SignUp({ onLogin }) {
 				<div className="sign-in-up">
 					<Form
 						noValidate="NoValidate"
-						onSubmit={handleSubmit(onSubmit)}
+						onSubmit={handleSubmit(handleLogin)}
 					>
 						<Controller
 							name="username"

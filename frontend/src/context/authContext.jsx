@@ -2,13 +2,12 @@ import { createContext, useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import MbLoader from "../components/common/MbLoader";
 
-const UserContext = createContext();
+const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
 	// Define the context items
 	const [user, setUser] = useState(null);
 	const [userLoading, setUserLoading] = useState(true);
-	const navigate = useNavigate();
 
 	// Call current user on every page mount
 	useEffect(() => {
@@ -64,7 +63,7 @@ export function AuthProvider({ children }) {
 		return <Component {...rest} />;
 	}
 
-	const value = { user, loginSaveUser, logout, getCurrentUser };
+	const value = { user, ProtectedRoute, logout, getCurrentUser, handleLogin };
 
 	if (userLoading) {
 		return <MbLoader />;
@@ -74,3 +73,5 @@ export function AuthProvider({ children }) {
 		<AuthProvider.Provider value={value}>{children}</AuthProvider.Provider>
 	);
 }
+
+export default AuthContext;
