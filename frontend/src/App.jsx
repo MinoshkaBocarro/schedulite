@@ -1,5 +1,16 @@
 // React Imports
-import { BrowserRouter } from "react-router-dom";
+// React Imports
+import {
+	Routes,
+	Route,
+	// Navigate,
+	BrowserRouter,
+} from "react-router-dom";
+import { useState, useEffect } from "react";
+
+// Page Imports
+import Layout from "./components/layout/Layout";
+import Login from "./pages/Login";
 
 // Import Apollo CLient
 import { ApolloClient, HttpLink, InMemoryCache } from "@apollo/client";
@@ -46,7 +57,12 @@ function App() {
 			<BrowserRouter>
 				<ApolloProvider client={client}>
 					<Routes>
-						<Route path="/" element={<Layout />}></Route>
+						<Route path="/" element={<Layout />}>
+							<Route
+								path="login"
+								element={<Login onLogin={handleLogin} />}
+							/>
+						</Route>
 					</Routes>
 				</ApolloProvider>
 			</BrowserRouter>

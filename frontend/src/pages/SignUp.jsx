@@ -1,0 +1,170 @@
+// React Hook Form and Joi
+import { Controller, useForm } from "react-hook-form";
+import { joiResolver } from "@hookform/resolvers/joi";
+import Joi from "joi";
+
+// Apollo and graphQL
+import { useMutation } from "@apollo/client/react";
+import { CREATE_USER } from "../../graphQL/mutations/mutations";
+
+// React imports
+import { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { Form } from "react-bootstrap";
+
+// Toast import
+import { toast } from "react-toastify";
+
+// Component imports
+import Title from "../..//done/common/Title";
+import MbContainer from "../../done/common/MbContainer";
+import MbContainer from "../components/common/MbLoader";
+import MbButton from "../common/MbButton";
+import MbLoader from "../components/common/MbLoader";
+
+function SignUp({ onLogin }) {
+	const schema = Joi.object({
+		username: Joi.string().min(3).max(50).lowercase().required(),
+		password: Joi.string().min(8).max(1024).required(),
+	});
+
+	const {
+		control,
+		handleSubmit,
+		formState: { errors },
+		reset,
+	} = useForm({
+		resolver: joiResolver(schema),
+		defaultValues: { username: "", password: "" },
+	});
+
+	// Apollo Client Mutation
+	const [createUser, { loading, error }] = useMutation(CREATE_USER, {});
+
+	const [errorMessage, setErrorMessage] = useState("");
+
+	const navigate = useNavigate();
+
+	// Submit New User
+	const onSubmit = async (data, event) => {
+		event.preventDefault();
+		const { username, password } = data;
+		try {
+			const result = await createUser({
+				variables: {
+					input: {
+						username,
+						password,
+					},
+				},
+			});
+
+			onLogin(result.data.createUser);
+			setErrorMessage("");
+			navigate("/");
+		} catch (error) {
+			setErrorMessage(error.message);
+		}
+	};
+
+	if (error) {
+		setErrorMessage(error);
+	}
+
+	if (loading) {
+		return <MbLoader />;
+	}
+
+	useEffect(() => {
+		if (errorMessage) {
+			toast.error(errorMessage);
+		}
+	}, [errorMessage]);
+
+	return (
+		<div className="login-signup">
+			<MbContainer>
+				<Title>Sign Up</Title>
+				<div className="sign-in-up">
+					<Form
+						noValidate="NoValidate"
+						onSubmit={handleSubmit(onSubmit)}
+					>
+						<Controller
+							name="username"
+							control={control}
+							render={({ field }) => (
+								<Form.Group controlId="username">
+									<Form.Label className="visually-hidden">
+										Username
+									</Form.Label>
+									<Form.Control
+										{...field}
+										type="text"
+										placeholder="Username"
+										size="lg"
+										className="form-shadow mb-2"
+										isInvalid={errors.username}
+									/>
+									<Form.Control.Feedback type="invalid">
+										{errors.username?.message}
+									</Form.Control.Feedback>
+								</Form.Group>
+							)}
+						/>
+						<Controller
+							name="password"
+							control={control}
+							render={({ field }) => (
+								<Form.Group
+									controlId="password"
+									className="mt-2"
+								>
+									<Form.Label className="visually-hidden">
+										Password
+									</Form.Label>
+									<Form.Control
+										{...field}
+										type="password"
+										placeholder="Password"
+										size="lg"
+										className="form-shadow"
+										isInvalid={errors.password}
+									/>
+									<Form.Control.Feedback type="invalid">
+										{errors.password?.message}
+									</Form.Control.Feedback>
+								</Form.Group>
+							)}
+						/>
+						<MbButton
+							variant="dark"
+							size="lg"
+							block="true"
+							className="w-100 mt-2"
+							type="submit"
+						>
+							{inOrUp === "up" ? "Sign Up" : "Login"}
+							<i className="bi bi-send-fill"></i>
+						</MbButton>
+					</Form>
+					<p className="m-0 mt-1">
+						{inOrUp === "up" ? (
+							<>
+								Already have an account?{" "}
+								<Link to="/login">Login</Link> now!
+							</>
+						) : (
+							<>
+								Don't have an account?{" "}
+								<Link to="/signup"> Sign up</Link> now!
+							</>
+						)}
+					</p>
+				</div>
+			</MbContainer>
+		</div>
+	);
+}
+
+export default SignUp;
