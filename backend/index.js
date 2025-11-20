@@ -41,6 +41,24 @@ async function startServer() {
 
 	const { url } = await startStandaloneServer(server, {
 		listen: { port: 4000 },
+		context: async ({ req, res }) => {
+			try {
+				const token = req.headers.authorization || "";
+				if (!token) return;
+
+				const user = jwt.verify(token, appPrivateKey);
+				if (!user) {
+					throw new Error("User not found");
+				}
+				return { user };
+			} catch (error) {
+				throw new GraphQLError(error, {
+					extensions: {
+						code: "JWT_DECODE_ERROR",
+					},
+				});
+			}
+		},
 	});
 
 	console.log(`Server ready at ${url}`);
