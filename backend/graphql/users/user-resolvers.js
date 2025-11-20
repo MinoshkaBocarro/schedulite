@@ -4,13 +4,14 @@ const _ = require("lodash");
 // Import error handler
 const ErrorHandler = require("../../../utilities/errorHandler");
 
-// Import model
+// Import models
 const {
 	User,
 	validateUser,
 	validateLogin,
 	validateUserUpdate,
 } = require("../../models/user");
+const { Event } = require("../../modals/event");
 
 // Import auth
 const { isAuthenticated, isTheSameUser } = require("../../helpers/auth");
@@ -233,6 +234,44 @@ const resolvers = {
 				ErrorHandler.catchError(
 					`Failed to update user:${error.message}`,
 					"UPDATE_USER_ERROR"
+				);
+			}
+		},
+
+		deleteUser: async (parent, args, context) => {
+			try {
+				isAuthenticated(context);
+
+				const user = await User.findById(args.id);
+
+				if (!user) {
+					ErrorHandler.throwError(
+						`User not found: ${error.message}`,
+						"USER_NOT_FOUND",
+						{
+							http: { status: 404 },
+						}
+					);
+				}
+
+				isTheSameUser(user, context);
+
+				// Remove the user from all the events where they are in the attendees list
+				await Event.updateMany(
+					{ attendees: args.id },
+					{ $pull: { attendees: args.id } }
+				);
+
+				// Delete all events the user has created for ease
+				await Event.deleteMany({ createdBy: args.id });
+
+				const deletedUser = await User.findByIdAndDelete(args.id);
+
+				return deletedUser;
+			} catch (error) {
+				ErrorHandler.catchError(
+					`Failed to delete user: ${error.message}`,
+					"DELETE_USER_ERROR"
 				);
 			}
 		},
