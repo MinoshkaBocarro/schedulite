@@ -38,18 +38,52 @@ function isTheSameUser(user, context) {
 	// Returns: Nothing
 }
 
+// @function isAttending
+// Helper authorisation function to ensure that the user requesting access to event data is attending the event
+// Parameters:
+//    event = the current Event document being resolved
+//    context = the context object from the GraphQL resolver argument
 function isAttending(event, context) {
-	event.attendees.filter((attendeeUsername) => {
-		context.user.username === attendeeUsername;
+	// Filters the array of attendees so that the resulting array only contains the attendee who's username matches the current user's username
+	event.attendees.filter((attendee) => {
+		context.user.username === attendee.username;
 	});
 
+	// Checks there is any entries in the isAttending array which would indicate that the user was matched and throws an error if there isn't as the user is not attending the event
 	if (!isAttending.length) {
-		"User is not authorised to perform this action",
+		ErrorHandler.throwError(
+			// Error details
+			"User is not authorised to perform this action",
+			// Code
 			"FORBIDDEN",
-			{ http: { status: 403 } };
+			// Other options
+			{ http: { status: 403 } }
+		);
 	}
+	// Returns: Nothing
+}
+
+// @function isEventCreator
+// Helper authorisation function to ensure that only the creator can proceed
+// Parameters:
+//    event = the current Event document being resolved
+//    context = the context object from the GraphQL resolver argument
+async function isEventCreator(event, context) {
+	// Checks whether the ID in the current Event document's createdBy field is equal to the ID of the current User from context and throws an error if they don't match
+	if (event.createdBy.toString() !== context.user._id.toString()) {
+		ErrorHandler.throwError(
+			// Error details
+			"User is not authorised to perform this action",
+			// Code
+			"FORBIDDEN",
+			// Other options
+			{ http: { status: 403 } }
+		);
+	}
+	// Returns: Nothing
 }
 
 module.exports.isAuthenticated = isAuthenticated;
 module.exports.isTheSameUser = isTheSameUser;
 module.exports.isAttending = isAttending;
+module.exports.isEventCreator = isEventCreator;

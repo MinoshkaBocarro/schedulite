@@ -2,7 +2,11 @@
 const ErrorHandler = require("../../../utilities/errorHandler");
 
 // Auth Imports
-const { isAuthenticated, isAttending } = require("../../helpers/auth");
+const {
+	isAuthenticated,
+	isAttending,
+	isEventCreator,
+} = require("../../helpers/auth");
 
 // Mongoose Model Imports
 const {
@@ -102,7 +106,7 @@ const resolvers = {
 
 				if (error) {
 					ErrorHandler.throwError(
-						`Invalid input data: ${error.message}`,
+						`Invalid input data: ${error.details[0].message}`,
 						"BAD_USER_INPUT",
 						{ invalidArgs: args.input }
 					);
@@ -117,6 +121,81 @@ const resolvers = {
 					error,
 					`Failed to create event ${error.message}`,
 					"CREATE_EVENT_ERROR"
+				);
+			}
+		},
+
+		// Resolves update mutation
+		// Parameters
+		//    args = uses input and id
+		//    context = checks for user, uses user._id and user.username
+		updateEvent: async (parent, args, context) => {
+			try {
+				// Checks if the user has been authenticated
+				isAuthenticated(context);
+
+				// Gets the user id and username from context to denote as the Event's creator
+				const creatorID = context.user._id;
+				const creatorUsername = context.user.username;
+
+				// Destructures attendees Array and the rest of the input data
+				const { attendees, ...inputData } = args.input;
+
+				// Fetches the full event document from the ID that has been provided in the args
+				const event = await Event.findById(args.id);
+
+				// Checks if the event exists and throws and error if it does not
+				if (!event) {
+					ErrorHandler.throwError(
+						// Error details
+						`Event not found: ${error.message}`,
+						"EVENT_NOT_FOUND",
+						{ http: { status: 404 } }
+					);
+				}
+
+				// Checks if the user is the creator before proceeding
+				isEventCreator(event, context);
+
+				// Gets processed username list that checks for existing usernames, changes all the usernames to IDs and checks that the creator always included and not duplicated
+				const finalAttendees = await processCreatorInUsernameList(
+					creatorID,
+					creatorUsername,
+					attendees
+				);
+
+				// Reconstructs the event data with the validated and processed data
+				const eventData = {
+					...inputData,
+					attendees: finalAttendees,
+				};
+
+				// Validates the event
+				const { error, value } = validateEventUpdate(eventData);
+
+				// Checks if the event validation has thrown an Error
+				if (error) {
+					ErrorHandler.throwError(
+						`Invalid input data: ${error.details[0].message}`,
+						"BAD_USER_INPUT",
+						{ invalidArgs: args.input }
+					);
+				}
+
+				// Updates the event document in the database by finding its ID
+				const updatedEvent = await Event.findByIdAndUpdate(
+					args.id,
+					{ $set: value },
+					{ new: true }
+				);
+
+				// Returns: Full Event document
+				return updatedEvent;
+			} catch (error) {
+				ErrorHandler.catchError(
+					error,
+					`Failed to update event: ${error.message}`,
+					"UPDATE_EVENT_ERROR"
 				);
 			}
 		},
@@ -157,11 +236,11 @@ async function usernameListValidation(givenUsernameList) {
 		);
 
 		// Throws an error listing the usernames that were not found
-		throw new GraphQLError(
+		ErrorHandler.throwError(
 			`The following users could not be found: ${notFoundUsernames.join(
 				", "
 			)}`,
-			{ extensions: { code: "USER_NOT_FOUND" } }
+			"USER_NOT_FOUND"
 		);
 	}
 
