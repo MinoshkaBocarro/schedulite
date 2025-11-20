@@ -48,10 +48,10 @@ const Event = mongoose.model("Event", eventSchema);
 function validateEvent(event) {
 	const schema = Joi.object({
 		title: Joi.string().min(3).max(50).required(),
-		description: Joi.string().max(5000).optional().allow(null),
-		location: Joi.string().max(5000).optional().allow(null),
+		description: Joi.string().max(5000).optional(),
+		location: Joi.string().max(5000).optional(),
 		startTime: Joi.date().required(),
-		endTime: Joi.date().min(Joi.ref("startTime")).optional().allow(null),
+		endTime: Joi.date().min(Joi.ref("startTime")).optional(),
 		attendees: Joi.array().items(Joi.objectId()).optional(),
 		createdBy: Joi.objectId().required(),
 	});
@@ -59,5 +59,20 @@ function validateEvent(event) {
 	return schema.validate(event);
 }
 
+function validateEventUpdate(event) {
+	const schema = Joi.object({
+		title: Joi.string().min(3).max(50).optional(),
+		description: Joi.string().max(5000).optional(),
+		location: Joi.string().max(5000).optional(),
+		startTime: Joi.date().optional(),
+		endTime: Joi.date().min(Joi.ref("startTime")).optional(),
+		attendees: Joi.array().items(Joi.objectId()).optional(),
+		createdBy: Joi.forbidden(),
+	});
+
+	return schema.validate(event);
+}
+
 module.exports.Event = Event;
 module.exports.validateEvent = validateEvent;
+module.exports.validateEventUpdate = validateEventUpdate;
