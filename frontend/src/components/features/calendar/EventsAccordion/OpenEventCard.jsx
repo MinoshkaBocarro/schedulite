@@ -4,10 +4,10 @@ import { useEffect, useState } from "react";
 import { format } from "date-fns";
 
 import { GET_EVENT } from "../../../../graphQL/queries/queries";
-import MbButtonLink from "../../../../../../done/common/MbButtonLink";
-import MbButton from "../../../../../../done/common/MbButton";
+import MbButtonLink from "../../../common/MbButtonLink";
+import MbButton from "../../../common/MbButton";
 import { DELETE_EVENT } from "../../../../graphQL/mutations/mutations";
-import MbLoader from "../../../../../../done/common/MbLoader";
+import MbLoader from "../../../common/MbLoader";
 import { toast } from "react-toastify";
 
 function OpenEventCard({ cardData, onClickClose, user, refetchEvents }) {

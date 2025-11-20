@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import MbButtonLink from "../../../../../../done/common/MbButtonLink";
+import MbButtonLink from "../../../common/MbButtonLink";
 import EventsItem from "./EventsItem";
 
 function EventsList({
