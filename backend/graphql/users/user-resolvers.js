@@ -31,6 +31,27 @@ const resolvers = {
 				);
 			}
 		},
+		getUsers: async (parent, args) => {
+			try {
+				const users = await User.find();
+
+				// If there are no users
+				if (!users.length) {
+					ErrorHandler.throwError(
+						"No users found",
+						"GET_USERS_ERROR"
+					);
+				}
+
+				return users;
+			} catch (error) {
+				ErrorHandler.catchError(
+					error,
+					`Failed to fetch users ${error.message}`,
+					"FETCH_USERS_ERROR"
+				);
+			}
+		},
 	},
 };
 
