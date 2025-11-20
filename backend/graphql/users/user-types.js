@@ -10,6 +10,17 @@ const userTypeDefs = gql`
 		events: [Event]
 		token: String
 	}
+
+	type Query {
+		getUser(id: ID!): User
+		getUsers: [User]
+	}
+
+	type Mutation {
+		createUser(input: CreateUserInput): User
+		updateUser(id: ID!, input: UpdateUserInput!): User
+		deleteUser(id: ID!): User
+	}
 `;
 
 module.exports = userTypeDefs;
