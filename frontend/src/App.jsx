@@ -9,6 +9,7 @@ import {
 import { useState, useEffect } from "react";
 
 // Page Imports
+import Home from "./pages/Home";
 import Layout from "./components/layout/Layout";
 import Login from "./pages/Login.jsx";
 import SignUp from "./pages/SignUp";
@@ -33,6 +34,12 @@ function App() {
 					<AuthProvider>
 						<Routes>
 							<Route path="/" element={<Layout />}>
+								<Route
+									index
+									element={
+										<ProtectedRoute component={Home} />
+									}
+								></Route>
 								<Route path="login" element={<Login />} />
 								<Route path="signup" element={<SignUp />} />
 							</Route>
