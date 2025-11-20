@@ -1,13 +1,21 @@
 import { useQuery } from "@apollo/client/react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 
-import { GET_EVENTS_FOR_CALENDAR } from "../../../graphQL/queries/queries";
+import AuthContext from "../../../context/authContext";
+
 import Calendar from "./Calendar";
 import EventsList from "./EventsAccordion/EventsList";
-import MbLoader from "../../../../../done/common/MbLoader";
+
+import { GET_EVENTS_FOR_CALENDAR } from "../../../graphQL/queries/queries";
+
+import MbLoader from "../../common/MbLoader";
 import { toast } from "react-toastify";
 
-function CalendarContainer({ user }) {
+function CalendarContainer() {
+	const { getCurrentUser } = useContext(AuthContext);
+
+	const user = getCurrentUser();
+
 	const [events, setEvents] = useState([]);
 	const [selectedEventID, setSelectedEventID] = useState(null);
 
@@ -37,10 +45,6 @@ function CalendarContainer({ user }) {
 			setEvents(eventArray);
 		}
 	}, [data]);
-
-	// useEffect(() => {
-	// 	refetch();
-	// }, [refetch]);
 
 	const handleEventClick = async (info) => {
 		const eventID = info.event.id || null;
