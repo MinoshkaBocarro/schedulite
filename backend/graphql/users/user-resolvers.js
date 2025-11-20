@@ -119,6 +119,68 @@ const resolvers = {
 				);
 			}
 		},
+		loginUser: async (parent, args) => {
+			try {
+				const { error, value } = validateLogin(args.input);
+
+				// Check if filled in user data is correct
+				if (error) {
+					ErrorHandler.throwError(
+						`Invalid input data: ${error.details[0].message}`,
+						"BAD_USER_INPUT",
+						{ invalidArgs: args.input }
+					);
+				}
+
+				// Check if user is in the database
+				const user = await User.findOne({ username: value.username });
+
+				if (!user) {
+					ErrorHandler.throwError(
+						`Invalid username or password`,
+						"UNAUTHORISED",
+						{
+							http: { status: 401 },
+						}
+					);
+				}
+				// Check if userPassword is correct
+				const validPassword = await user.comparePassword(
+					value.password,
+					user.password
+				);
+
+				if (!user) {
+					ErrorHandler.throwError(
+						`Invalid username or password`,
+						"UNAUTHORISED",
+						{
+							http: { status: 401 },
+						}
+					);
+				}
+
+				const token = user.generateAuthToken();
+
+				let userData = _.pick(user, [
+					"id",
+					"username",
+					"email",
+					"firstName",
+					"lastName",
+					"createdAt",
+				]);
+				userData.token = token;
+
+				return userData;
+			} catch (error) {
+				ErrorHandler.catchError(
+					error,
+					`Failed to login ${error.message}`,
+					"LOGIN_USER_ERROR"
+				);
+			}
+		},
 	},
 };
 

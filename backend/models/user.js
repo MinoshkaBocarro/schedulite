@@ -88,5 +88,15 @@ function validateUser(user) {
 	return schema.validate(user);
 }
 
+function validateLogin(user) {
+	const schema = Joi.object({
+		username: Joi.string().min(3).max(50).required(),
+		password: Joi.string().min(8).max(1024).required(),
+	});
+
+	return schema.validate(user);
+}
+
 module.exports.User = User;
 module.exports.validateUser = validateUser;
+module.exports.validateLogin = validateLogin;

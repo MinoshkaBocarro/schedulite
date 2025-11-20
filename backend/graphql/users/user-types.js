@@ -27,6 +27,11 @@ const userTypeDefs = gql`
 		lastName: String
 	}
 
+	input LoginUserInput {
+		username: String
+		password: String
+	}
+
 	type Query {
 		getUser(id: ID!): User
 		getUsers: [User]
@@ -36,6 +41,7 @@ const userTypeDefs = gql`
 		createUser(input: CreateUserInput): User
 		updateUser(id: ID!, input: UpdateUserInput!): User
 		deleteUser(id: ID!): User
+		loginUser(input: LoginUserInput): User
 	}
 `;
 
