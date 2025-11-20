@@ -11,7 +11,7 @@ const {
 	validateLogin,
 	validateUserUpdate,
 } = require("../../models/user");
-const { Event } = require("../../modals/event");
+const { Event } = require("../../models/event");
 
 // Import auth
 const { isAuthenticated, isTheSameUser } = require("../../helpers/auth");

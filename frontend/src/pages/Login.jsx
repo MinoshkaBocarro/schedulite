@@ -60,11 +60,15 @@ function Login() {
 					},
 				},
 			});
-
+			console.log("result");
+			console.log(result);
 			saveUser(result.data.createUser);
 			setErrorMessage("");
 			navigate("/");
 		} catch (error) {
+			console.log("error");
+			console.log(error.message);
+
 			setErrorMessage(error.message);
 		}
 	};
@@ -78,21 +82,15 @@ function Login() {
 		}
 	}, [location.state]);
 
-	if (error) {
-		setErrorMessage(error);
-	}
-
-	console.log(loading);
-
-	if (loading) {
-		return <MbLoader />;
-	}
-
 	useEffect(() => {
 		if (errorMessage) {
 			toast.error(errorMessage);
 		}
 	}, [errorMessage]);
+
+	if (loading) {
+		return <MbLoader />;
+	}
 
 	return (
 		<div className="login-signup">
@@ -150,16 +148,18 @@ function Login() {
 								</Form.Group>
 							)}
 						/>
-						<MbButton
-							variant="dark"
-							size="lg"
-							block="true"
-							className="w-100 mt-2"
-							type="submit"
-						>
-							Login
-							<i className="bi bi-send-fill"></i>
-						</MbButton>
+						<div className="button-container">
+							<MbButton
+								variant="dark"
+								size="lg"
+								block="true"
+								className="w-100 mt-2"
+								type="submit"
+							>
+								Login
+								<i className="bi bi-send-fill"></i>
+							</MbButton>
+						</div>
 					</Form>
 					<p className="m-0 mt-1">
 						Don't have an account?{" "}

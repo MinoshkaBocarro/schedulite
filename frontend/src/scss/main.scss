@@ -15,7 +15,7 @@
 // component imports
 @use "./components/card";
 @use "./components/calendarContainer";
-@use "./components/signInUp";
+@use "./components/signInUpForm";
 
 // layout imports
 @use "./layout/header";
@@ -24,6 +24,5 @@
 
 // pages imports
 @use "./pages/homePage";
-@use "./pages/loginPage";
 @use "./pages/profilePage";
 @use "./pages/editEventPage";

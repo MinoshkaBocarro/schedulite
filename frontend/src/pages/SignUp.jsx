@@ -65,23 +65,20 @@ function SignUp() {
 			setErrorMessage("");
 			navigate("/");
 		} catch (error) {
+			console.log(error);
 			setErrorMessage(error.message);
 		}
 	};
-
-	if (error) {
-		setErrorMessage(error);
-	}
-
-	if (loading) {
-		return <MbLoader />;
-	}
 
 	useEffect(() => {
 		if (errorMessage) {
 			toast.error(errorMessage);
 		}
 	}, [errorMessage]);
+
+	if (loading) {
+		return <MbLoader />;
+	}
 
 	return (
 		<div className="login-signup">
@@ -139,16 +136,18 @@ function SignUp() {
 								</Form.Group>
 							)}
 						/>
-						<MbButton
-							variant="dark"
-							size="lg"
-							block="true"
-							className="w-100 mt-2"
-							type="submit"
-						>
-							Sign Up
-							<i className="bi bi-send-fill"></i>
-						</MbButton>
+						<div className="button-container">
+							<MbButton
+								variant="dark"
+								size="lg"
+								block="true"
+								className="w-100 mt-2"
+								type="submit"
+							>
+								Sign Up
+								<i className="bi bi-send-fill"></i>
+							</MbButton>
+						</div>
 					</Form>
 					<p className="m-0 mt-1">
 						Already have an account? <Link to="/login">Login</Link>{" "}

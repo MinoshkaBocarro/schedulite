@@ -26,11 +26,11 @@ const client = new ApolloClient({
 });
 
 function App() {
-	const { getUserFromLocalStorage } = useContext(AuthContext);
+	const { getCurrentUser } = useContext(AuthContext);
 	const location = useLocation();
 
 	function ProtectedRoute({ component: Component, ...rest }) {
-		const user = getUserFromLocalStorage();
+		const user = getCurrentUser();
 		console.log("location.state");
 		console.log(location.state);
 		if (!user) {

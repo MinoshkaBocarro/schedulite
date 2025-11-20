@@ -31,10 +31,13 @@ export function AuthProvider({ children }) {
 	// Check whether the user is logged in
 	function getCurrentUser() {
 		try {
-			const token = getUserFromLocalStorage().token;
-			const savedUser = jwtDecode(token);
-			return savedUser;
+			const userString = localStorage.getItem("user");
+			const currentUser = JSON.parse(userString);
+
+			return currentUser;
 		} catch (error) {
+			localStorage.setItem("user", "");
+
 			return null;
 		}
 	}
@@ -45,23 +48,11 @@ export function AuthProvider({ children }) {
 		setUser(null);
 	};
 
-	const getUserFromLocalStorage = () => {
-		try {
-			const userString = localStorage.getItem("user");
-			const user = JSON.parse(userString);
-			return user;
-		} catch (error) {
-			localStorage.setItem("user", "");
-			return null;
-		}
-	};
-
 	const value = {
 		user,
 		getCurrentUser,
 		saveUser,
 		handleLogout,
-		getUserFromLocalStorage,
 	};
 
 	if (userLoading) {

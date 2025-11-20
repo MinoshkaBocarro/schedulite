@@ -1,5 +1,14 @@
 @use "../abstracts/" as *;
 
+.login-signup {
+	flex-grow: 1;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+	height: 100%;
+}
+
 .sign-in-up {
 	min-width: 500px;
 	min-height: 300px;
@@ -15,6 +24,10 @@
 
 	p {
 		text-align: center;
+	}
+
+	.button-container {
+		padding: 1.5rem;
 	}
 
 	button {

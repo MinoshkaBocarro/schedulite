@@ -1,4 +1,4 @@
-const ErrorHandler = require("../../utilities/errorHandler");
+const ErrorHandler = require("../utilities/errorHandler");
 
 // @function isAuthenticated
 // Helper authentication function to ensure that only a user with a token indicating they have been authenticated can proceed
