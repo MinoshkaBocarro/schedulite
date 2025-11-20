@@ -1,3 +1,7 @@
+// Load packages
+const jwt = require("jsonwebtoken");
+const { GraphQLError } = require("graphql");
+
 // Load server packages
 const { ApolloServer } = require("@apollo/server");
 const { startStandaloneServer } = require("@apollo/server/standalone");
@@ -5,6 +9,7 @@ const { startStandaloneServer } = require("@apollo/server/standalone");
 // Load merge packages
 const { loadFilesSync } = require("@graphql-tools/load-files");
 const { mergeTypeDefs, mergeResolvers } = require("@graphql-tools/merge");
+const { DateTimeTypeDefinition, DateTimeResolver } = require("graphql-scalars");
 
 // Import connection
 const { connect } = require("./helpers/connection");
@@ -30,10 +35,16 @@ if (!appPrivateKey && dbConnectionString) {
 const typeDefs = loadFilesSync("graphql/*/*-types.js");
 const resolvers = loadFilesSync("graphql/*/*-resolvers.js");
 
+const typeDefsMerged = mergeTypeDefs([DateTimeTypeDefinition, ...typeDefs]);
+const resolversMerged = mergeResolvers([
+	{ DateTime: DateTimeResolver },
+	...resolvers,
+]);
+
 async function startServer() {
 	const server = new ApolloServer({
-		typeDefs: typeDefs,
-		resolvers: resolvers,
+		typeDefs: typeDefsMerged,
+		resolvers: resolversMerged,
 	});
 
 	const databaseName = dbName;
