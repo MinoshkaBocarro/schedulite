@@ -13,6 +13,34 @@ const client = new ApolloClient({
 });
 
 function App() {
+	const [user, setUser] = useState(null);
+
+	function saveTokenToLocalStorage(user) {
+		localStorage.setItem("user", JSON.stringify(user));
+	}
+
+	const handleLogin = (user) => {
+		setUser(user);
+		saveTokenToLocalStorage(user);
+	};
+
+	const handleLogout = () => {
+		client.clearStore();
+		localStorage.removeItem("user");
+		setUser(null);
+	};
+
+	const getUserFromLocalStorage = () => {
+		try {
+			const userString = localStorage.getItem("user");
+			const user = JSON.parse(userString);
+			return user;
+		} catch (error) {
+			localStorage.setItem("user", "");
+			return null;
+		}
+	};
+
 	return (
 		<div className="app">
 			<BrowserRouter>
