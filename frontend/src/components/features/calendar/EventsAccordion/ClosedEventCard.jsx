@@ -1,3 +1,5 @@
+import { IoIosArrowDown } from "react-icons/io";
+
 function ClosedEventCard({ cardData, onClickOpen }) {
 	const { id, title } = cardData;
 
@@ -15,6 +17,7 @@ function ClosedEventCard({ cardData, onClickOpen }) {
 			>
 				{title}
 			</h3>
+			<IoIosArrowDown className="down-arrow" />
 		</div>
 	);
 }

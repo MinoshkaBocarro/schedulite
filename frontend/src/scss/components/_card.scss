@@ -5,7 +5,7 @@
 	background-color: $backgroundColor;
 	background-color: $backgroundColor;
 	color: $textColor;
-	padding: 13px;
+	padding: 10px;
 	border-color: $edgeColor;
 }
 
@@ -32,6 +32,8 @@
 .card.closed {
 	cursor: pointer;
 	min-height: min-content;
+	position: relative;
+
 	&.card-heading {
 		h3 {
 			margin: 0;
@@ -39,5 +41,13 @@
 			font-weight: bold;
 			color: $accentColor; // Highlight the title
 		}
+	}
+
+	.down-arrow {
+		align-self: end;
+		position: absolute;
+		bottom: 0;
+		right: 0;
+		margin: 5px 10px;
 	}
 }

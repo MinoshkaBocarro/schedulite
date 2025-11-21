@@ -1,3 +1,4 @@
+// Error handler import
 const ErrorHandler = require("../utilities/errorHandler");
 
 // @function isAuthenticated
@@ -83,6 +84,7 @@ async function isEventCreator(event, context) {
 	// Returns: Nothing
 }
 
+// Export functions
 module.exports.isAuthenticated = isAuthenticated;
 module.exports.isTheSameUser = isTheSameUser;
 module.exports.isAttending = isAttending;
