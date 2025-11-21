@@ -3,7 +3,7 @@ import { useMutation } from "@apollo/client/react";
 
 // React imports
 import { useNavigate } from "react-router-dom";
-import { Form, Spinner } from "react-bootstrap";
+import { Container, Form, Spinner } from "react-bootstrap";
 
 // Form imports
 import { Controller, useForm } from "react-hook-form";
@@ -163,7 +163,7 @@ function AddEvent() {
 	});
 
 	return (
-		<>
+		<Container>
 			<Form
 				onSubmit={handleSubmit(onSubmit)}
 				className="p-4 border rounded shadow-sm"
@@ -302,7 +302,7 @@ function AddEvent() {
 					</MbButton>
 				</div>
 			</Form>
-		</>
+		</Container>
 	);
 }
 

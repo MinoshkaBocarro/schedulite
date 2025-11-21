@@ -4,7 +4,7 @@ import { useMutation, useQuery } from "@apollo/client/react";
 // React imports
 import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { Form, Spinner } from "react-bootstrap";
+import { Container, Form, Spinner } from "react-bootstrap";
 import { useState } from "react";
 import { useContext } from "react";
 import AuthContext from "../context/authContext";
@@ -202,7 +202,7 @@ function EditEvent() {
 	}
 
 	return (
-		<>
+		<Container>
 			<Form
 				data-bs-theme="dark"
 				// is this right? shouldn't this be an arrow function?? its the handle submit from useForm
@@ -342,7 +342,7 @@ function EditEvent() {
 					</MbButton>
 				</div>
 			</Form>
-		</>
+		</Container>
 	);
 }
 

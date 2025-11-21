@@ -10,6 +10,7 @@ import { GET_EVENTS_FOR_CALENDAR } from "../../../graphQL/queries/queries";
 
 import MbLoader from "../../common/MbLoader";
 import { toast } from "react-toastify";
+import { Container } from "react-bootstrap";
 
 function CalendarContainer() {
 	const { getCurrentUser } = useContext(AuthContext);

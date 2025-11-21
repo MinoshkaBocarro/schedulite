@@ -8,6 +8,9 @@
 	color: $accentColor;
 	max-height: calc(100vh - $pageHeight);
 	height: 100%;
+	width: 100%;
+
+	max-width: 1450px;
 
 	.full-calendar-container,
 	.events-container {

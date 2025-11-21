@@ -18,7 +18,7 @@ function Header({ handleLogout }) {
 
 	return (
 		<Navbar id="navbar" className="mb-2 navbar-class" variant="dark">
-			<Container fluid>
+			<Container>
 				<Navbar.Brand as={Link} to="/">
 					<Icon path={mdiCalendarArrowRight} size={2} />
 					Schedulite

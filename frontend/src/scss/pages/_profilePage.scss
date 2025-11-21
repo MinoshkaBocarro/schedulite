@@ -1,3 +1,14 @@
+.profile-container {
+	display: flex;
+	flex-direction: column;
+	padding: 10px;
+	gap: 20px;
+
+	form {
+		text-align: center;
+	}
+}
+
 .profile-title {
 	text-align: center;
 }
@@ -18,11 +29,4 @@
 	.col-one {
 		justify-self: end;
 	}
-}
-
-.profile-container {
-	display: flex;
-	flex-direction: column;
-	padding: 10px;
-	gap: 20px;
 }

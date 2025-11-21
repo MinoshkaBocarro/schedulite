@@ -141,13 +141,10 @@ function EditProfile() {
 	return (
 		<div className="login-signup">
 			<MbContainer>
-				<Card
-					className="p-4 shadow-sm"
-					style={{ maxWidth: "600px", margin: "2rem auto" }}
-				>
-					<Card.Title className="profile-title d-flex justify-content-between align-items-center mb-4">
+				<div className="profile-container">
+					<div className="profile-title">
 						<h2>{user.username}'s Profile 👤</h2>
-					</Card.Title>
+					</div>
 					<Form onSubmit={handleSubmit(onSubmit)}>
 						<Form.Group className="mb-3">
 							<Form.Label>Email</Form.Label>
@@ -223,7 +220,7 @@ function EditProfile() {
 							</MbButton>
 						</div>
 					</Form>
-				</Card>
+				</div>
 			</MbContainer>
 		</div>
 	);
