@@ -41,6 +41,10 @@
 		.fc-daygrid-day-number {
 			color: $textColor;
 		}
+
+		.fc-event {
+			cursor: pointer;
+		}
 	}
 
 	.events-container {

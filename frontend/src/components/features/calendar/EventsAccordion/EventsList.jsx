@@ -10,7 +10,7 @@ function EventsList({ events, eventClick, selectedEventID, refetchEvents }) {
 	return (
 		<div className="events-container">
 			<div className="add-event">
-				<MbButtonLink to="/event/add">+</MbButtonLink>
+				<MbButtonLink to="/event/add">Add event</MbButtonLink>
 			</div>
 			<div className="events-list">
 				{events.map((event) => {

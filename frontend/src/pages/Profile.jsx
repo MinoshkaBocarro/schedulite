@@ -14,6 +14,7 @@ import MbButtonLink from "../components/common/MbButtonLink";
 
 // Context imports
 import AuthContext from "../context/authContext";
+import MbLoader from "../components/common/MbLoader";
 
 function Profile() {
 	const navigate = useNavigate();
@@ -32,17 +33,11 @@ function Profile() {
 	});
 
 	if (loading) {
-		return <div className="p-5 text-center">Loading user details...</div>;
+		return <MbLoader />;
 	}
 
 	if (error) {
 		toast.error(`Error loading user: ${error.message}`);
-	}
-
-	if (data && !data.getUser) {
-		return (
-			<div className="p-5 text-center text-warning">User not found.</div>
-		);
 	}
 
 	return (
@@ -92,8 +87,8 @@ function Profile() {
 						</div>
 					</div>
 					<div className="button-container">
-						<MbButtonLink to={`/profile/edit`}>Edit</MbButtonLink>
 						<MbButtonLink to="/">Back</MbButtonLink>
+						<MbButtonLink to={`/profile/edit`}>Edit</MbButtonLink>
 					</div>
 				</div>
 			</MbContainer>
