@@ -1,11 +1,21 @@
-import { Container, Nav, Navbar } from "react-bootstrap";
+import { Container, Nav, Navbar, NavItem } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import { useContext } from "react";
 
+// Context
+import AuthContext from "../../context/authContext";
+
+// Icons
+import { IoIosLogOut } from "react-icons/io";
 import Icon from "@mdi/react";
 import { mdiCalendarArrowRight } from "@mdi/js";
 import { mdiAccountCircle } from "@mdi/js";
 
-function Header({ user }) {
+function Header({ handleLogout }) {
+	const { getCurrentUser } = useContext(AuthContext);
+
+	const user = getCurrentUser();
+
 	return (
 		<Navbar id="navbar" className="mb-2 navbar-class" variant="dark">
 			<Container fluid>
@@ -17,14 +27,26 @@ function Header({ user }) {
 				<Navbar.Collapse id="basic-navbar-nav">
 					<Nav className="ms-auto navbar-custom">
 						{user ? (
-							<Nav.Link
-								as={Link}
-								to="/profile"
-								className="px-3 fs-5 align-items-center"
-							>
-								<span className="me-2">{user.username}</span>
-								<Icon path={mdiAccountCircle} size={1} />
-							</Nav.Link>
+							<>
+								<Nav.Link
+									as={Link}
+									to="/profile"
+									className="px-3 fs-5 align-items-center"
+								>
+									<span className="me-2">
+										{user.username}
+									</span>
+									<Icon path={mdiAccountCircle} size={1} />
+								</Nav.Link>
+								<NavItem className="logout-icon">
+									<IoIosLogOut
+										size={24}
+										color="#4db6ac"
+										strokeWidth={2}
+										onClick={handleLogout}
+									/>
+								</NavItem>
+							</>
 						) : (
 							<>
 								<Nav.Link

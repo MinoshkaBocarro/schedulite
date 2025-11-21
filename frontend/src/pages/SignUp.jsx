@@ -10,7 +10,7 @@ import { CREATE_USER } from "../graphQL/mutations/mutations";
 // React imports
 import { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Form } from "react-bootstrap";
+import { Form, Spinner } from "react-bootstrap";
 
 // Toast import
 import { toast } from "react-toastify";
@@ -44,12 +44,13 @@ function SignUp() {
 	const [createUser, { loading, error }] = useMutation(CREATE_USER, {});
 
 	const [errorMessage, setErrorMessage] = useState("");
+	const [submissionLoading, setSubmissionLoading] = useState(false);
 
 	const navigate = useNavigate();
 
 	// Submit New User
-	const onSubmit = async (data, event) => {
-		event.preventDefault();
+	const onSubmit = async (data) => {
+		setSubmissionLoading(true);
 		const { username, password } = data;
 		try {
 			const result = await createUser({
@@ -67,6 +68,9 @@ function SignUp() {
 		} catch (error) {
 			console.log(error);
 			setErrorMessage(error.message);
+			setTimeout(() => {
+				setSubmissionLoading(false), 1000;
+			});
 		}
 	};
 
@@ -86,6 +90,7 @@ function SignUp() {
 				<Title>Sign Up</Title>
 				<div className="sign-in-up">
 					<Form
+						data-bs-theme="dark"
 						noValidate="NoValidate"
 						onSubmit={handleSubmit(onSubmit)}
 					>
@@ -138,13 +143,17 @@ function SignUp() {
 						/>
 						<div className="button-container">
 							<MbButton
-								variant="dark"
-								size="lg"
-								block="true"
-								className="w-100 mt-2"
+								loadingState={submissionLoading}
 								type="submit"
 							>
-								Sign Up
+								{submissionLoading ? (
+									<Spinner
+										animation="border"
+										variant="light"
+									/>
+								) : (
+									"Sign Up"
+								)}
 								<i className="bi bi-send-fill"></i>
 							</MbButton>
 						</div>

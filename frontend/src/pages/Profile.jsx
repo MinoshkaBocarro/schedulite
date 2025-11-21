@@ -1,12 +1,19 @@
+// Apollo and GraphQL Imports
 import { useQuery } from "@apollo/client/react";
 import { GET_USER } from "../graphQL/queries/queries";
-import { Card, Col, Row } from "react-bootstrap";
+
+// React imports
 import { useContext } from "react";
-import MbContainer from "../components/common/MbContainer";
-import MbButton from "../components/common/MbButton";
-import { toast } from "react-toastify";
-import MbButtonLink from "../components/common/MbButtonLink";
 import { useNavigate } from "react-router-dom";
+
+// Component imports
+import { toast } from "react-toastify";
+
+import MbContainer from "../components/common/MbContainer";
+import MbButtonLink from "../components/common/MbButtonLink";
+
+// Context imports
+import AuthContext from "../context/authContext";
 
 function Profile() {
 	const navigate = useNavigate();
@@ -41,59 +48,54 @@ function Profile() {
 	return (
 		<div className="login-signup">
 			<MbContainer>
-				<Card
-					className="p-4 shadow-sm"
-					style={{ maxWidth: "600px", margin: "2rem auto" }}
-				>
-					<Card.Title className="profile-title d-flex justify-content-between align-items-center mb-4">
+				<div className="profile-container">
+					<div className="profile-title">
 						<h2>
 							{data.getUser
 								? data.getUser.username
 								: user.username}
 							's Profile 👤
 						</h2>
-						<MbButton onClick={handleToggleEdit}>Edit</MbButton>
-					</Card.Title>
-
+					</div>
 					<div className="profile-details signup-login">
-						<Row className="mb-3">
-							<Col sm="4">Username:</Col>
-							<Col sm="8">
+						<div className="nested-grid">
+							<div className="col-one">Username:</div>
+							<div>
 								<strong>
 									{data.getUser
 										? data.getUser.username
 										: user.username}
 								</strong>
-							</Col>
-						</Row>
-
-						<Row className="mb-3">
-							<Col sm="4">Email:</Col>
-							<Col sm="8">
+							</div>
+						</div>
+						<div className="nested-grid">
+							<div className="col-one">Email:</div>
+							<div>
 								{data.getUser ? data.getUser.email : user.email}
-							</Col>
-						</Row>
-
-						<Row className="mb-3">
-							<Col sm="4">First Name:</Col>
-							<Col sm="8">
+							</div>
+						</div>
+						<div className="nested-grid">
+							<div className="col-one">First Name:</div>
+							<div>
 								{data.getUser
 									? data.getUser.firstName
 									: user.firstName}
-							</Col>
-						</Row>
-
-						<Row className="mb-3">
-							<Col sm="4">Last Name:</Col>
-							<Col sm="8">
+							</div>
+						</div>
+						<div className="nested-grid">
+							<div className="col-one">Last Name:</div>
+							<div>
 								{data.getUser
 									? data.getUser.lastName
 									: user.lastName}
-							</Col>
-						</Row>
+							</div>
+						</div>
 					</div>
-					<MbButtonLink to="/">Back</MbButtonLink>
-				</Card>
+					<div className="button-container">
+						<MbButtonLink to={`/profile/edit`}>Edit</MbButtonLink>
+						<MbButtonLink to="/">Back</MbButtonLink>
+					</div>
+				</div>
 			</MbContainer>
 		</div>
 	);

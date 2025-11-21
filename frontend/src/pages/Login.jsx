@@ -51,6 +51,7 @@ function Login() {
 	const onSubmit = async (data, event) => {
 		event.preventDefault();
 		const { username, password } = data;
+
 		try {
 			const result = await loginUser({
 				variables: {
@@ -62,7 +63,8 @@ function Login() {
 			});
 			console.log("result");
 			console.log(result);
-			saveUser(result.data.createUser);
+
+			saveUser(result.data.loginUser);
 			setErrorMessage("");
 			navigate("/");
 		} catch (error) {

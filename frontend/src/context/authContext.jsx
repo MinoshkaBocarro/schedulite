@@ -1,5 +1,5 @@
 import { createContext, useEffect, useState } from "react";
-import { Navigate, useLocation } from "react-router-dom";
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import MbLoader from "../components/common/MbLoader";
 
 const AuthContext = createContext();
@@ -8,7 +8,7 @@ export function AuthProvider({ children }) {
 	// Define the context items
 	const [user, setUser] = useState(null);
 	const [userLoading, setUserLoading] = useState(true);
-	const location = useLocation();
+	const navigate = useNavigate();
 
 	// Call current user on every page mount
 	useEffect(() => {
@@ -20,7 +20,8 @@ export function AuthProvider({ children }) {
 	}, []);
 
 	function saveTokenToLocalStorage(user) {
-		localStorage.setItem("user", JSON.stringify(user));
+		const userString = JSON.stringify(user);
+		localStorage.setItem("user", userString);
 	}
 
 	const saveUser = (user) => {
@@ -42,17 +43,10 @@ export function AuthProvider({ children }) {
 		}
 	}
 
-	const handleLogout = () => {
-		client.clearStore();
-		localStorage.removeItem("user");
-		setUser(null);
-	};
-
 	const value = {
 		user,
 		getCurrentUser,
 		saveUser,
-		handleLogout,
 	};
 
 	if (userLoading) {

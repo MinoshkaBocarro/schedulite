@@ -30,15 +30,18 @@ const userSchema = new Schema(
 		firstName: {
 			type: String,
 			maxlength: 255,
+			default: null,
 		},
 		lastName: {
 			type: String,
 			maxlength: 255,
+			default: null,
 		},
 		email: {
 			type: String,
 			minlength: 5,
 			maxlength: 255,
+			default: null,
 		},
 	},
 	{ timestamps: true }
@@ -73,7 +76,7 @@ const User = mongoose.model("User", userSchema);
 
 function validateUser(user) {
 	const schema = Joi.object({
-		username: Joi.string().min(3).max(50).required().lowercase(),
+		username: Joi.string().min(3).max(50).required().lowercase().trim(),
 		password: Joi.string().min(8).max(1024).required(),
 		email: Joi.string()
 			.email({ tlds: { allow: false } })
@@ -99,16 +102,17 @@ function validateLogin(user) {
 
 function validateUserUpdate(user) {
 	const schema = Joi.object({
-		username: Joi.string().min(3).max(50).lowercase().optional(),
+		username: Joi.forbidden(),
 		password: Joi.string().min(8).max(1024).optional(),
 		// for testing purposes
 		email: Joi.string()
 			.email({ tlds: { allow: false } })
 			.min(5)
 			.max(255)
-			.optional(),
-		firstName: Joi.string().max(255).optional(),
-		lastName: Joi.string().max(255).optional(),
+			.optional()
+			.allow(null),
+		firstName: Joi.string().max(255).optional().allow(null),
+		lastName: Joi.string().max(255).optional().allow(null),
 	});
 
 	return schema.validate(user);

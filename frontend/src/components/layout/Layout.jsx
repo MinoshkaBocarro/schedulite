@@ -5,7 +5,7 @@ import { Outlet } from "react-router-dom";
 import Footer from "./Footer";
 import Header from "./Header";
 
-function Layout({ user }) {
+function Layout({ handleLogout }) {
 	return (
 		<div id="app">
 			<ToastContainer
@@ -21,7 +21,7 @@ function Layout({ user }) {
 				theme="dark"
 				transition={Bounce}
 			/>
-			<Header id="header" user={user} />
+			<Header id="header" handleLogout={handleLogout} />
 			<div id="app-content">
 				<Outlet />
 			</div>

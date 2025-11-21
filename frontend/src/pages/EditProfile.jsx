@@ -8,7 +8,7 @@ import { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 // Form Component Imports
-import { Card, Form } from "react-bootstrap";
+import { Card, Form, Spinner } from "react-bootstrap";
 import { Controller, useForm } from "react-hook-form";
 import { joiResolver } from "@hookform/resolvers/joi";
 import Joi from "joi";
@@ -19,17 +19,20 @@ import MbButton from "../components/common/MbButton";
 import { toast } from "react-toastify";
 import MbButtonLink from "../components/common/MbButtonLink";
 import MbLoader from "../components/common/MbLoader";
+import AuthContext from "../context/authContext";
+import { useState } from "react";
 
 function EditProfile() {
 	const schema = Joi.object({
-		username: Joi.string().min(3).max(50).required().lowercase(),
-		// not doing password atm
-		email: Joi.string().email().min(5).max(255).optional().allow(null),
-		firstName: Joi.string().max(255).optional().allow(null),
-		lastName: Joi.string().max(255).optional().allow(null),
+		email: Joi.string().email().min(5).max(255).optional().allow(null, ""),
+		firstName: Joi.string().max(255).optional().allow(null, ""),
+		lastName: Joi.string().max(255).optional().allow(null, ""),
 	});
 
 	const navigate = useNavigate();
+
+	const [submissionLoading, setSubmissionLoading] = useState(false);
+
 	const { getCurrentUser, saveUser } = useContext(AuthContext);
 	const user = getCurrentUser();
 	const userID = user.id;
@@ -62,13 +65,13 @@ function EditProfile() {
 
 	// Not doing password atm
 	const onSubmit = async (formData) => {
+		setSubmissionLoading(true);
 		try {
-			const { username, email, firstName, lastName } = formData;
+			const { email, firstName, lastName } = formData;
 			await updateUser({
 				variables: {
 					updateUserID: userID,
 					input: {
-						username,
 						email: email || null,
 						firstName: firstName || null,
 						lastName: lastName || null,
@@ -80,11 +83,14 @@ function EditProfile() {
 			const {
 				data: { getUser },
 			} = await refetch();
-			await saveUser({ ...getUser });
+			await saveUser({ token: user.token, ...getUser });
 			// change to profile view
-			navigate;
+			navigate("/profile");
 		} catch (error) {
 			toast.error(error.message);
+			setTimeout(() => {
+				setSubmissionLoading(false), 1000;
+			});
 		}
 	};
 
@@ -96,7 +102,6 @@ function EditProfile() {
 		formState: { errors },
 	} = useForm({
 		defaultValues: {
-			username: "",
 			email: "",
 			firstName: "",
 			lastName: "",
@@ -108,7 +113,6 @@ function EditProfile() {
 		if (data && data.getUser) {
 			const user = data.getUser;
 			reset({
-				username: user.username,
 				email: user.email || "",
 				firstName: user.firstName || "",
 				lastName: user.lastName || "",
@@ -161,6 +165,7 @@ function EditProfile() {
 							/>
 							<Form.Control.Feedback type="invalid">
 								{errors.email?.message}
+								{console.log(errors)}{" "}
 							</Form.Control.Feedback>
 						</Form.Group>
 
@@ -203,7 +208,19 @@ function EditProfile() {
 						</Form.Group>
 						<div className="button-container">
 							<MbButtonLink to="/">Back</MbButtonLink>
-							<MbButton type="submit">Save Changes</MbButton>
+							<MbButton
+								loadingState={submissionLoading}
+								type="submit"
+							>
+								{submissionLoading ? (
+									<Spinner
+										animation="border"
+										variant="light"
+									/>
+								) : (
+									"Save Changes"
+								)}
+							</MbButton>
 						</div>
 					</Form>
 				</Card>

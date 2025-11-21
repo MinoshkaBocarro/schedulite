@@ -1,5 +1,7 @@
 import { useMutation, useQuery } from "@apollo/client/react";
 import { useContext, useEffect, useState } from "react";
+import { IoMdCheckboxOutline } from "react-icons/io";
+import { toast } from "react-toastify";
 
 import { format } from "date-fns";
 
@@ -11,7 +13,8 @@ import { DELETE_EVENT } from "../../../../graphQL/mutations/mutations";
 import MbButtonLink from "../../../common/MbButtonLink";
 import MbButton from "../../../common/MbButton";
 import MbLoader from "../../../common/MbLoader";
-import { toast } from "react-toastify";
+
+// Context import
 import AuthContext from "../../../../context/authContext";
 
 function OpenEventCard({ cardData, onClickClose, refetchEvents }) {
@@ -77,7 +80,7 @@ function OpenEventCard({ cardData, onClickClose, refetchEvents }) {
 
 	return (
 		<div className="card open" onClick={onClickClose}>
-			{eventData ? (
+			{eventData && (
 				<>
 					{eventData.title && (
 						<h3 className="event-title card-heading">
@@ -85,48 +88,51 @@ function OpenEventCard({ cardData, onClickClose, refetchEvents }) {
 						</h3>
 					)}
 					{eventData.description && (
-						<p className="event-description">
+						<div className="event-description">
 							{eventData.description}
-						</p>
+						</div>
 					)}
 					{eventData.location && (
-						<p className="event-location">{eventData.location}</p>
+						<div className="event-location">
+							{eventData.location}
+						</div>
 					)}
 					{eventData.startTime && (
-						<p className="event-start">
+						<div className="event-start">
 							Start:{" "}
 							{format(
 								new Date(eventData.startTime),
 								"MMM d, yyyy, h:mma"
 							)}
-						</p>
+						</div>
 					)}
 					{eventData.endTime && (
-						<p className="event-end">
+						<div className="event-end">
 							End:{" "}
 							{format(
 								new Date(eventData.endTime),
 								"MMM d, yyyy, h:mma"
 							)}
-						</p>
+						</div>
 					)}
 					{eventData.attendees?.length > 0 && (
-						<p className="event-attendees">
-							<p>Attendees:</p>
-							<ul>
+						<div className="event-attendees">
+							<div>Attendees:</div>
+							<div className="attendee-list">
 								{eventData.attendees.map((attendee) => (
-									<li key={attendee.username}>
+									<div key={attendee.username}>
+										<IoMdCheckboxOutline />
 										{attendee.username}
-									</li>
+									</div>
 								))}
-							</ul>
-						</p>
+							</div>
+						</div>
 					)}
 					{/* SAVE BEFORE TRYING CREATEDBY */}
 					{eventData.createdBy && (
-						<p className="event-createdBy">
+						<div className="event-createdBy">
 							Created by: {eventData.createdBy.username}
-						</p>
+						</div>
 					)}
 					{user.id === eventData.createdBy.id && (
 						<div className="button-container">
@@ -137,9 +143,6 @@ function OpenEventCard({ cardData, onClickClose, refetchEvents }) {
 						</div>
 					)}
 				</>
-			) : (
-				// style this properly
-				<p>Loading</p>
 			)}
 		</div>
 	);

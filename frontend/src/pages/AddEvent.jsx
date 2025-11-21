@@ -3,7 +3,7 @@ import { useMutation } from "@apollo/client/react";
 
 // React imports
 import { useNavigate } from "react-router-dom";
-import { Form } from "react-bootstrap";
+import { Form, Spinner } from "react-bootstrap";
 
 // Form imports
 import { Controller, useForm } from "react-hook-form";
@@ -20,7 +20,7 @@ import MbButtonLink from "../components/common/MbButtonLink";
 // Function Imports
 import { processAttendeeArray } from "../helpers/attendeeProcessing";
 import { toast } from "react-toastify";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import AuthContext from "../context/authContext";
 
 // Component Imports
@@ -31,11 +31,12 @@ function AddEvent() {
 	const { getCurrentUser } = useContext(AuthContext);
 	const user = getCurrentUser();
 
+	const [loading, setLoading] = useState(false);
+
 	const [createEvent] = useMutation(CREATE_EVENT, {
 		update(cache, { data: { createEvent } }) {
 			cache.modify({
 				fields: {
-					// questionable here
 					events(existingEvents = []) {
 						const newEvent = cache.writeFragment({
 							data: createEvent,
@@ -81,15 +82,17 @@ function AddEvent() {
 			});
 			return result;
 		} catch (error) {
-			toast.error(error.message);
+			throw Error(error.message);
 		}
 	};
 
 	const schema = Joi.object({
-		title: Joi.string().min(3).max(50),
+		title: Joi.string().min(3).max(50).required(),
 		description: Joi.string().optional().max(5000).allow("", null),
 		location: Joi.string().max(5000).optional().allow("", null),
-		startTime: Joi.date().iso().required(),
+		startTime: Joi.date().iso().required().messages({
+			"date.base": "You must provide a start time for the event",
+		}),
 		endTime: Joi.date()
 			.iso()
 			.min(Joi.ref("startTime"))
@@ -109,6 +112,7 @@ function AddEvent() {
 	});
 
 	const onSubmit = async (formData) => {
+		setLoading(loading);
 		try {
 			const validationResult = processAttendeeArray(
 				formData.attendeeInputString
@@ -132,19 +136,19 @@ function AddEvent() {
 				},
 				user.token
 			);
+
 			navigate("/");
 		} catch (error) {
 			toast.error(`Failed to add event: ${error.message}`);
+			setTimeout(() => {
+				setLoading(false), 1000;
+			});
 		}
 	};
 
-	// TODO check those that I'm not using
 	const {
 		control,
-		watch,
 		handleSubmit,
-		setValue,
-		reset,
 		formState: { errors },
 	} = useForm({
 		defaultValues: {
@@ -163,6 +167,7 @@ function AddEvent() {
 			<Form
 				onSubmit={handleSubmit(onSubmit)}
 				className="p-4 border rounded shadow-sm"
+				data-bs-theme="dark"
 			>
 				<h2 className="mb-4">Add Event</h2>
 
@@ -241,6 +246,7 @@ function AddEvent() {
 						)}
 					/>
 					<Form.Control.Feedback type="invalid">
+						{console.log(errors.startTime)}
 						{errors.startTime?.message}
 					</Form.Control.Feedback>
 				</Form.Group>
@@ -287,7 +293,13 @@ function AddEvent() {
 				</Form.Group>
 				<div className="button-container">
 					<MbButtonLink to="/">Back</MbButtonLink>
-					<MbButton type="submit">Add Event</MbButton>
+					<MbButton loadingState={loading} type="submit">
+						{loading ? (
+							<Spinner animation="border" variant="light" />
+						) : (
+							"Add Event"
+						)}
+					</MbButton>
 				</div>
 			</Form>
 		</>

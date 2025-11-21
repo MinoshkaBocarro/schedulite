@@ -1,5 +1,12 @@
 // React Imports
-import { Routes, Route, Navigate, useLocation } from "react-router-dom";
+import {
+	Routes,
+	Route,
+	Navigate,
+	useLocation,
+	useNavigate,
+} from "react-router-dom";
+import { useContext } from "react";
 
 // Page Imports
 import Home from "./pages/Home";
@@ -12,11 +19,12 @@ import Profile from "./pages/Profile";
 import EditProfile from "./pages/EditProfile.jsx";
 import NotFound from "./pages/NotFound";
 
-// Import Apollo CLient
+// Apollo CLient Import
 import { ApolloClient, HttpLink, InMemoryCache } from "@apollo/client";
 import { ApolloProvider } from "@apollo/client/react";
+
+// Context Imports
 import AuthContext from "./context/authContext";
-import { useContext } from "react";
 
 const client = new ApolloClient({
 	link: new HttpLink({
@@ -26,22 +34,20 @@ const client = new ApolloClient({
 });
 
 function App() {
-	const { getCurrentUser } = useContext(AuthContext);
+	const { getCurrentUser, saveUser } = useContext(AuthContext);
 	const location = useLocation();
+	const navigate = useNavigate();
 
 	function ProtectedRoute({ component: Component, ...rest }) {
 		const user = getCurrentUser();
-		console.log("location.state");
-		console.log(location.state);
+
 		if (!user) {
 			return (
 				<Navigate
 					to="/login"
 					state={{
 						from: location,
-						showNotLoggedInToast: location.state?.loggingOut
-							? false
-							: true,
+						showNotLoggedInToast: true ? false : true,
 					}}
 					replace
 				/>
@@ -50,11 +56,24 @@ function App() {
 		return <Component {...rest} />;
 	}
 
+	const handleLogout = () => {
+		client.clearStore();
+		localStorage.removeItem("user");
+		saveUser(null);
+		navigate("login", {
+			replace: true,
+			state: { showNotLoggedInToast: false },
+		});
+	};
+
 	return (
 		<div className="app">
 			<ApolloProvider client={client}>
 				<Routes>
-					<Route path="/" element={<Layout />}>
+					<Route
+						path="/"
+						element={<Layout handleLogout={handleLogout} />}
+					>
 						<Route
 							index
 							element={<ProtectedRoute component={Home} />}
@@ -74,11 +93,11 @@ function App() {
 							element={<ProtectedRoute component={Profile} />}
 						/>
 						<Route
-							path="profile/edit/:profileID"
+							path="profile/edit"
 							element={<ProtectedRoute component={EditProfile} />}
 						/>
+						<Route path="*" element={<NotFound />} />
 					</Route>
-					<Route path="*" element={<NotFound />} />
 				</Routes>
 			</ApolloProvider>
 		</div>

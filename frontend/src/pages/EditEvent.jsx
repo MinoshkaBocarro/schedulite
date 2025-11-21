@@ -4,7 +4,10 @@ import { useMutation, useQuery } from "@apollo/client/react";
 // React imports
 import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { Alert, Button, Form } from "react-bootstrap";
+import { Form, Spinner } from "react-bootstrap";
+import { useState } from "react";
+import { useContext } from "react";
+import AuthContext from "../context/authContext";
 
 // Form imports
 import { Controller, useForm } from "react-hook-form";
@@ -24,9 +27,13 @@ import MbButtonLink from "../components/common/MbButtonLink";
 import MbButton from "../components/common/MbButton";
 import { toast } from "react-toastify";
 
-function EditEvent({ user }) {
+function EditEvent() {
+	const { getCurrentUser } = useContext(AuthContext);
+	const user = getCurrentUser();
 	const { eventID } = useParams();
 	const navigate = useNavigate();
+
+	const [submissionLoading, setSubmissionLoading] = useState(false);
 
 	const { loading, error, data } = useQuery(GET_EVENT, {
 		variables: { eventID: eventID },
@@ -91,6 +98,7 @@ function EditEvent({ user }) {
 	});
 
 	const onSubmit = async (formData) => {
+		setSubmissionLoading(true);
 		try {
 			const validationResult = processAttendeeArray(
 				formData.attendeeInputString
@@ -122,6 +130,9 @@ function EditEvent({ user }) {
 			navigate("/");
 		} catch (error) {
 			toast.error(`Failed to update event: ${error.message}`);
+			setTimeout(() => {
+				setSubmissionLoading(false), 1000;
+			});
 		}
 	};
 
@@ -193,6 +204,7 @@ function EditEvent({ user }) {
 	return (
 		<>
 			<Form
+				data-bs-theme="dark"
 				// is this right? shouldn't this be an arrow function?? its the handle submit from useForm
 				onSubmit={handleSubmit(onSubmit)}
 				className="p-4 border rounded shadow-sm"
@@ -321,8 +333,13 @@ function EditEvent({ user }) {
 				</Form.Group>
 				<div className="button-container">
 					<MbButtonLink to="/">Back</MbButtonLink>
-
-					<MbButton type="submit">Edit Event</MbButton>
+					<MbButton loadingState={submissionLoading} type="submit">
+						{submissionLoading ? (
+							<Spinner animation="border" variant="light" />
+						) : (
+							"Edit Event"
+						)}
+					</MbButton>
 				</div>
 			</Form>
 		</>

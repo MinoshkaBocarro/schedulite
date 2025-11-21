@@ -167,6 +167,8 @@ const resolvers = {
 				// Validates the event
 				const { error, value } = validateEvent(eventData);
 
+				console.log("error");
+				console.log(error);
 				if (error) {
 					ErrorHandler.throwError(
 						// Error Details
