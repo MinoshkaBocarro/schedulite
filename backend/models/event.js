@@ -43,15 +43,12 @@ const eventSchema = new Schema(
 			required: true,
 		},
 	},
-	{ timestamps: true }
+	{ timestamps: true },
 );
 
 const Event = mongoose.model("Event", eventSchema);
 
 function validateEvent(event) {
-	console.log("firing");
-	console.log("event");
-	console.log(event);
 	const schema = Joi.object({
 		title: Joi.string().min(3).max(50).required(),
 		description: Joi.string().max(5000).optional().allow(null),
@@ -61,8 +58,6 @@ function validateEvent(event) {
 		attendees: Joi.array().items(Joi.objectId()).optional(),
 		createdBy: Joi.objectId().required(),
 	});
-
-	console.log("validating");
 
 	return schema.validate(event);
 }

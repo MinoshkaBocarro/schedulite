@@ -81,7 +81,7 @@ const resolvers = {
 					ErrorHandler.throwError(
 						// Error details
 						"Event does not exist",
-						"GET_EVENT_ERROR"
+						"GET_EVENT_ERROR",
 					);
 				}
 
@@ -94,7 +94,7 @@ const resolvers = {
 				ErrorHandler.catchError(
 					error,
 					`Failed to fetch event: ${error.message}`,
-					"FETCH_EVENT_ERROR"
+					"FETCH_EVENT_ERROR",
 				);
 			}
 		},
@@ -126,7 +126,7 @@ const resolvers = {
 					error,
 					// Error details
 					`Failed to fetch events ${error.message}`,
-					"FETCH_EVENTS_ERROR"
+					"FETCH_EVENTS_ERROR",
 				);
 			}
 		},
@@ -154,7 +154,7 @@ const resolvers = {
 				const finalAttendees = await processCreatorInUsernameList(
 					creatorID,
 					creatorUsername,
-					attendees
+					attendees,
 				);
 
 				// Reconstructs the event data with the validated and processed data
@@ -167,14 +167,12 @@ const resolvers = {
 				// Validates the event
 				const { error, value } = validateEvent(eventData);
 
-				console.log("error");
-				console.log(error);
 				if (error) {
 					ErrorHandler.throwError(
 						// Error Details
 						`Invalid input data: ${error.details[0].message}`,
 						"BAD_USER_INPUT",
-						{ invalidArgs: args.input }
+						{ invalidArgs: args.input },
 					);
 				}
 
@@ -189,7 +187,7 @@ const resolvers = {
 				ErrorHandler.catchError(
 					error,
 					`Failed to create event ${error.message}`,
-					"CREATE_EVENT_ERROR"
+					"CREATE_EVENT_ERROR",
 				);
 			}
 		},
@@ -219,7 +217,7 @@ const resolvers = {
 						// Error details
 						`Event not found: ${error.message}`,
 						"EVENT_NOT_FOUND",
-						{ http: { status: 404 } }
+						{ http: { status: 404 } },
 					);
 				}
 
@@ -230,7 +228,7 @@ const resolvers = {
 				const finalAttendees = await processCreatorInUsernameList(
 					creatorID,
 					creatorUsername,
-					attendees
+					attendees,
 				);
 
 				// Reconstructs the event data with the validated and processed data
@@ -247,7 +245,7 @@ const resolvers = {
 					ErrorHandler.throwError(
 						`Invalid input data: ${error.details[0].message}`,
 						"BAD_USER_INPUT",
-						{ invalidArgs: args.input }
+						{ invalidArgs: args.input },
 					);
 				}
 
@@ -255,7 +253,7 @@ const resolvers = {
 				const updatedEvent = await Event.findByIdAndUpdate(
 					args.id,
 					{ $set: value },
-					{ new: true }
+					{ new: true },
 				);
 
 				// Returns: Full Event document
@@ -264,7 +262,7 @@ const resolvers = {
 				ErrorHandler.catchError(
 					error,
 					`Failed to update event: ${error.message}`,
-					"UPDATE_EVENT_ERROR"
+					"UPDATE_EVENT_ERROR",
 				);
 			}
 		},
@@ -285,7 +283,7 @@ const resolvers = {
 				if (!event) {
 					ErrorHandler.throwError(
 						`Event does not exist`,
-						"DELETE_EVENT_ERROR"
+						"DELETE_EVENT_ERROR",
 					);
 				}
 
@@ -301,7 +299,7 @@ const resolvers = {
 				ErrorHandler.catchError(
 					error,
 					`Failed to delete event:: ${error.message}`,
-					"DELETE_EVENT_ERROR"
+					"DELETE_EVENT_ERROR",
 				);
 			}
 		},
@@ -314,7 +312,7 @@ const resolvers = {
 async function usernameListValidation(givenUsernameList) {
 	// Converts the givenUsernameList to a set to remove any duplicates while ensuring there are no uppercase characters as per database requirements
 	const givenUsernameSet = new Set(
-		givenUsernameList.map((username) => username.toLowerCase())
+		givenUsernameList.map((username) => username.toLowerCase()),
 	);
 
 	// Converts the givenUsernameSet back into an array for future
@@ -338,15 +336,15 @@ async function usernameListValidation(givenUsernameList) {
 		const foundUsernames = new Set(users.map((user) => user.username));
 		// Creates an array of the usernames that were not found by removing the found usernames
 		const notFoundUsernames = usernamesToFind.filter(
-			(username) => !foundUsernames.has(username)
+			(username) => !foundUsernames.has(username),
 		);
 
 		// Throws an error listing the usernames that were not found
 		ErrorHandler.throwError(
 			`The following users could not be found: ${notFoundUsernames.join(
-				", "
+				", ",
 			)}`,
-			"USER_NOT_FOUND"
+			"USER_NOT_FOUND",
 		);
 	}
 
@@ -367,7 +365,7 @@ async function usernameListValidation(givenUsernameList) {
 async function processCreatorInUsernameList(
 	creatorID,
 	creatorUsername,
-	attendees
+	attendees,
 ) {
 	// Initialises the finalAttendees array with it containing the creator's ID
 	let finalAttendees = [creatorID.toString()];
@@ -376,7 +374,7 @@ async function processCreatorInUsernameList(
 	if (attendees && attendees.length > 0) {
 		// Removes the creator's username from the list if present
 		const attendeesWithoutCreator = attendees.filter(
-			(attendee) => attendee.toLowerCase() !== creatorUsername
+			(attendee) => attendee.toLowerCase() !== creatorUsername,
 		);
 		// Checks if there are attendee usernames other than the creator's username
 		if (attendeesWithoutCreator.length) {

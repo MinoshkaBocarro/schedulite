@@ -26,7 +26,7 @@ const dbConnectionString = config.get("db.connectionString");
 // Check if app private key and connection string are defined
 if (!appPrivateKey && dbConnectionString) {
 	console.error(
-		"FATAL ERROR: APP_PRIVATE_KEY is not defined and/or DB_CONNECTION_String is not defined"
+		"FATAL ERROR: APP_PRIVATE_KEY is not defined and/or DB_CONNECTION_String is not defined",
 	);
 	process.exit(1);
 }
@@ -71,8 +71,6 @@ async function startServer() {
 			}
 		},
 	});
-
-	console.log(`Server ready at ${url}`);
 }
 
 startServer();
