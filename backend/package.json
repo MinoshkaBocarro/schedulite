@@ -8,7 +8,8 @@
 	"main": "index.js",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
-		"dev": "nodemon src/index"
+		"dev": "nodemon src/index",
+		"build": "node src/index"
 	},
 	"dependencies": {
 		"@apollo/server": "^5.0.0",
