@@ -28,7 +28,7 @@ import AuthContext from "./context/authContext";
 
 const client = new ApolloClient({
 	link: new HttpLink({
-		uri: "http://localhost:4000/",
+		uri: import.meta.env.VITE_API_URL,
 	}),
 	cache: new InMemoryCache(),
 });

@@ -51,7 +51,7 @@ async function startServer() {
 	connect(`${dbConnectionString}${databaseName}`);
 
 	const { url } = await startStandaloneServer(server, {
-		listen: { port: 4000 },
+		listen: { port: process.env.PORT },
 		context: async ({ req, res }) => {
 			try {
 				const token = req.headers.authorization || "";
