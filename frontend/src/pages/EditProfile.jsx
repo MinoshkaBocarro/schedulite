@@ -89,7 +89,7 @@ function EditProfile() {
 		} catch (error) {
 			toast.error(error.message);
 			setTimeout(() => {
-				setSubmissionLoading(false), 1000;
+				(setSubmissionLoading(false), 1000);
 			});
 		}
 	};
@@ -162,7 +162,6 @@ function EditProfile() {
 							/>
 							<Form.Control.Feedback type="invalid">
 								{errors.email?.message}
-								{console.log(errors)}{" "}
 							</Form.Control.Feedback>
 						</Form.Group>
 

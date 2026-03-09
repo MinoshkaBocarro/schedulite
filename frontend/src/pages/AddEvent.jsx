@@ -105,7 +105,7 @@ function AddEvent() {
 					"string.min":
 						"Each username must be at least 3 characters.",
 					"string.max": "Each username cannot exceed 50 characters.",
-				})
+				}),
 			)
 			.optional(),
 		createdBy: Joi.forbidden(),
@@ -115,7 +115,7 @@ function AddEvent() {
 		setLoading(loading);
 		try {
 			const validationResult = processAttendeeArray(
-				formData.attendeeInputString
+				formData.attendeeInputString,
 			);
 
 			if (!validationResult) {
@@ -134,14 +134,14 @@ function AddEvent() {
 					endTime: endTime || null,
 					attendees: validationResult,
 				},
-				user.token
+				user.token,
 			);
 
 			navigate("/");
 		} catch (error) {
 			toast.error(`Failed to add event: ${error.message}`);
 			setTimeout(() => {
-				setLoading(false), 1000;
+				(setLoading(false), 1000);
 			});
 		}
 	};
@@ -246,7 +246,6 @@ function AddEvent() {
 						)}
 					/>
 					<Form.Control.Feedback type="invalid">
-						{console.log(errors.startTime)}
 						{errors.startTime?.message}
 					</Form.Control.Feedback>
 				</Form.Group>

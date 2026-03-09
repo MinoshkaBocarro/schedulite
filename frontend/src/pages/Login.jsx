@@ -61,23 +61,17 @@ function Login() {
 					},
 				},
 			});
-			console.log("result");
-			console.log(result);
 
 			saveUser(result.data.loginUser);
 			setErrorMessage("");
 			navigate("/");
 		} catch (error) {
-			console.log("error");
-			console.log(error.message);
-
 			setErrorMessage(error.message);
 		}
 	};
 
 	useEffect(() => {
 		// Double pop up only in dev mode
-		console.log(location.state);
 		if (location.state && location.state.showNotLoggedInToast) {
 			toast.warn("You are not logged in");
 			navigate("/login", { replace: true });

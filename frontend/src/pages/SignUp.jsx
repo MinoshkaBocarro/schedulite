@@ -66,10 +66,9 @@ function SignUp() {
 			setErrorMessage("");
 			navigate("/");
 		} catch (error) {
-			console.log(error);
 			setErrorMessage(error.message);
 			setTimeout(() => {
-				setSubmissionLoading(false), 1000;
+				(setSubmissionLoading(false), 1000);
 			});
 		}
 	};

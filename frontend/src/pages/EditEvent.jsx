@@ -61,15 +61,6 @@ function EditEvent() {
 					// Ensure event details that are not updated/rendered in the form are preserved
 					data: { getEvent: { ...getEvent, ...updateEvent } },
 				});
-
-				console.log("readQuerycheck");
-				// it seems to work for both eventID and ID???
-				console.log(
-					cache.readQuery({
-						query: GET_EVENT,
-						variables: { id: eventID },
-					}) || { getEvent: null }
-				);
 			}
 		},
 	});
@@ -91,7 +82,7 @@ function EditEvent() {
 					"string.min":
 						"Each username must be at least 3 characters.",
 					"string.max": "Each username cannot exceed 50 characters.",
-				})
+				}),
 			)
 			.optional(),
 		createdBy: Joi.forbidden(),
@@ -101,7 +92,7 @@ function EditEvent() {
 		setSubmissionLoading(true);
 		try {
 			const validationResult = processAttendeeArray(
-				formData.attendeeInputString
+				formData.attendeeInputString,
 			);
 
 			// this should not happen but just for handling
@@ -131,7 +122,7 @@ function EditEvent() {
 		} catch (error) {
 			toast.error(`Failed to update event: ${error.message}`);
 			setTimeout(() => {
-				setSubmissionLoading(false), 1000;
+				(setSubmissionLoading(false), 1000);
 			});
 		}
 	};

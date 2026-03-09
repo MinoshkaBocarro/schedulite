@@ -65,14 +65,12 @@ function OpenEventCard({ cardData, onClickClose, refetchEvents }) {
 	};
 
 	useEffect(() => {
-		console.log(data);
 		if (data && data.getEvent) {
 			setEventData(data.getEvent);
 		}
 	}, [data]);
 
 	// TODO delete
-	console.log(loading);
 	if (loading) return <MbLoader />; //
 	if (error) {
 		toast.error(error.message);
@@ -102,7 +100,7 @@ function OpenEventCard({ cardData, onClickClose, refetchEvents }) {
 							Start:{" "}
 							{format(
 								new Date(eventData.startTime),
-								"MMM d, yyyy, h:mma"
+								"MMM d, yyyy, h:mma",
 							)}
 						</div>
 					)}
@@ -111,7 +109,7 @@ function OpenEventCard({ cardData, onClickClose, refetchEvents }) {
 							End:{" "}
 							{format(
 								new Date(eventData.endTime),
-								"MMM d, yyyy, h:mma"
+								"MMM d, yyyy, h:mma",
 							)}
 						</div>
 					)}

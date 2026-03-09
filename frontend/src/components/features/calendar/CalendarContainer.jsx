@@ -28,14 +28,12 @@ function CalendarContainer() {
 					authorization: user.token,
 				},
 			},
-		}
+		},
 	);
 
 	useEffect(() => {
 		if (data && data.getUsersEvents) {
 			const eventArray = data.getUsersEvents.map((event) => {
-				console.log("event");
-				console.log(event);
 				return {
 					id: event.id,
 					title: event.title,
